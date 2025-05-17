@@ -1,0 +1,46 @@
+{
+    "doctors": [
+        {
+            "id": "d1",
+            "name": "Dr. Emily Smith",
+            "specialty": "General Medicine",
+            "username": "dr.emily",
+            "password": "emily123",
+            "email": "dr.emily@healthline.com",
+            "contact": "+1-555-0123",
+            "location": "New York",
+            "availability": {
+                "monday": "9:00-17:00",
+                "tuesday": "9:00-17:00",
+                "wednesday": "9:00-17:00",
+                "thursday": "9:00-17:00",
+                "friday": "9:00-13:00"
+            },
+            "hospital": {
+                "name": "Healthline Medical Center",
+                "address": "123 Health Street, NY 10001"
+            }
+        },
+        {
+            "id": "d2",
+            "name": "Dr. John Wilson",
+            "specialty": "Pediatrics",
+            "username": "dr.john",
+            "password": "john123",
+            "email": "dr.john@healthline.com",
+            "contact": "+1-555-0124",
+            "location": "Los Angeles",
+            "availability": {
+                "monday": "10:00-18:00",
+                "tuesday": "10:00-18:00",
+                "wednesday": "10:00-18:00",
+                "thursday": "10:00-18:00",
+                "friday": "10:00-14:00"
+            },
+            "hospital": {
+                "name": "Children's Medical Center",
+                "address": "456 Care Lane, LA 90001"
+            }
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "users": [
+      {
+        "id": "u1",
+        "username": "john.doe",
+        "password": "user123",
+        "name": "John Doe",
+        "email": "john@example.com",
+        "contact": "+1-555-0125",
+        "location": "New York",
+        "reports": []
+      }
+    ]
+  }

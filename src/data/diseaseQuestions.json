@@ -1,0 +1,2422 @@
+{
+    "Fever": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How many days have you had a fever?",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "What is your current body temperature?",
+                "key": "temperature",
+                "type": "number"
+            },
+            {
+                "id": 3,
+                "text": "Are you experiencing chills or shivering? (yes/no)",
+                "key": "chills",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have a headache? (yes/no)",
+                "key": "headache",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "What is your age?",
+                "key": "age",
+                "type": "number"
+            }
+        ],
+        "severityFormula": {
+            "temperature": 0.4,
+            "duration": 0.3,
+            "chills": 0.2,
+            "headache": 0.1
+        },
+        "specialist": [
+            "General Physician",
+            "Infectious Disease Specialist"
+        ]
+    },
+    "Cold": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How many days have you had a cold?",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Are you experiencing nasal congestion? (yes/no)",
+                "key": "congestion",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have a sore throat? (yes/no)",
+                "key": "sore_throat",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have a fever? (yes/no)",
+                "key": "fever",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "What is your age?",
+                "key": "age",
+                "type": "number"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.4,
+            "congestion": 0.3,
+            "sore_throat": 0.2,
+            "fever": 0.1
+        },
+        "specialist": [
+            "ENT Specialist",
+            "General Physician"
+        ]
+    },
+    "Cough": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How many days have you had a cough?",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Is your cough dry or wet? (dry/wet)",
+                "key": "cough_type",
+                "type": "text"
+            },
+            {
+                "id": 3,
+                "text": "Are you experiencing difficulty breathing? (yes/no)",
+                "key": "difficulty_breathing",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have chest pain? (yes/no)",
+                "key": "chest_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a fever? (yes/no)",
+                "key": "fever",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "difficulty_breathing": 0.4,
+            "duration": 0.3,
+            "chest_pain": 0.2,
+            "fever": 0.1
+        },
+        "specialist": [
+            "Pulmonologist",
+            "General Physician"
+        ]
+    },
+    "Stomach Pain": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How many days have you had stomach pain?",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Is the pain constant or intermittent? (constant/intermittent)",
+                "key": "pain_type",
+                "type": "text"
+            },
+            {
+                "id": 3,
+                "text": "Are you experiencing nausea or vomiting? (yes/no)",
+                "key": "nausea",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have diarrhea? (yes/no)",
+                "key": "diarrhea",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a fever? (yes/no)",
+                "key": "fever",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "nausea": 0.3,
+            "duration": 0.3,
+            "pain_type": 0.2,
+            "diarrhea": 0.1,
+            "fever": 0.1
+        },
+        "specialist": [
+            "Gastroenterologist",
+            "General Physician"
+        ]
+    },
+    "Diabetes": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Have you been feeling unusually thirsty? (yes/no)",
+                "key": "thirst",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Have you experienced increased urination frequency? (yes/no)",
+                "key": "urination",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Have you noticed unexplained weight loss recently? (yes/no)",
+                "key": "weight_loss",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you feel fatigued most of the time? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "What is your age?",
+                "key": "age",
+                "type": "number"
+            }
+        ],
+        "severityFormula": {
+            "thirst": 0.3,
+            "urination": 0.3,
+            "weight_loss": 0.2,
+            "fatigue": 0.2
+        },
+        "specialist": [
+            "Endocrinologist",
+            "General Physician"
+        ]
+    },
+    "Hypertension": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Have you experienced headaches recently? (yes/no)",
+                "key": "headaches",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you feel dizzy or lightheaded often? (yes/no)",
+                "key": "dizziness",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Have you noticed blurred vision? (yes/no)",
+                "key": "blurred_vision",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "What is your blood pressure level? (systolic/diastolic)",
+                "key": "bp_level",
+                "type": "text"
+            },
+            {
+                "id": 5,
+                "text": "Do you feel chest pain? (yes/no)",
+                "key": "chest_pain",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "bp_level": 0.4,
+            "headaches": 0.3,
+            "dizziness": 0.2,
+            "chest_pain": 0.1
+        },
+        "specialist": [
+            "Cardiologist",
+            "General Physician"
+        ]
+    },
+    "Asthma": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Are you experiencing shortness of breath? (yes/no)",
+                "key": "shortness_breath",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Have you had frequent coughing or wheezing? (yes/no)",
+                "key": "coughing",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you feel chest tightness? (yes/no)",
+                "key": "chest_tightness",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do these symptoms worsen at night? (yes/no)",
+                "key": "night_symptoms",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Are the symptoms triggered by exercise or allergens? (yes/no)",
+                "key": "triggers",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "shortness_breath": 0.4,
+            "coughing": 0.3,
+            "chest_tightness": 0.2,
+            "night_symptoms": 0.1
+        },
+        "specialist": [
+            "Pulmonologist",
+            "Allergist"
+        ]
+    },
+    "Migraine": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How many days have you experienced headaches this week?",
+                "key": "frequency",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Is the headache on one side of your head? (yes/no)",
+                "key": "side_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience nausea or vomiting? (yes/no)",
+                "key": "nausea",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you notice sensitivity to light or sound? (yes/no)",
+                "key": "sensitivity",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you noticed visual disturbances? (yes/no)",
+                "key": "aura",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "frequency": 0.3,
+            "side_pain": 0.3,
+            "nausea": 0.2,
+            "sensitivity": 0.2
+        },
+        "specialist": [
+            "Neurologist"
+        ]
+    },
+    "Flu (Influenza)": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How many days have you had symptoms?",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Do you have a fever over 100\u00b0F? (yes/no)",
+                "key": "fever",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Are you experiencing body aches? (yes/no)",
+                "key": "body_aches",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Are you feeling extreme fatigue? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a sore throat? (yes/no)",
+                "key": "sore_throat",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "fever": 0.3,
+            "body_aches": 0.3,
+            "fatigue": 0.2,
+            "duration": 0.2
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Tuberculosis (TB)": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you been coughing?",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Are you experiencing night sweats? (yes/no)",
+                "key": "night_sweats",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Have you noticed unexplained weight loss? (yes/no)",
+                "key": "weight_loss",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have blood in your sputum? (yes/no)",
+                "key": "blood_sputum",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you feel fatigued or weak? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "blood_sputum": 0.3,
+            "night_sweats": 0.2,
+            "weight_loss": 0.2
+        },
+        "specialist": [
+            "Pulmonologist"
+        ]
+    },
+    "Malaria": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you have a fever that comes and goes? (yes/no)",
+                "key": "intermittent_fever",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Are you experiencing chills or shaking? (yes/no)",
+                "key": "chills",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you feel nausea or vomiting? (yes/no)",
+                "key": "nausea",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have muscle aches or body pain? (yes/no)",
+                "key": "body_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you recently traveled to a malaria-endemic area? (yes/no)",
+                "key": "travel_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "intermittent_fever": 0.3,
+            "chills": 0.3,
+            "nausea": 0.2,
+            "travel_history": 0.2
+        },
+        "specialist": [
+            "Infectious Disease Specialist",
+            "General Physician"
+        ]
+    },
+    "Psoriasis": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you have scaly, red patches on your skin? (yes/no)",
+                "key": "scaly_patches",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Are you experiencing joint pain or stiffness? (yes/no)",
+                "key": "joint_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do the patches itch or burn? (yes/no)",
+                "key": "itch_burn",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "How long have these symptoms been present?",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a family history of psoriasis? (yes/no)",
+                "key": "family_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "scaly_patches": 0.3,
+            "joint_pain": 0.3,
+            "itch_burn": 0.2,
+            "duration": 0.2
+        },
+        "specialist": [
+            "Dermatologist"
+        ]
+    },
+    "Depression": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you feel persistent sadness or a lack of interest in activities? (yes/no)",
+                "key": "sadness",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Are you experiencing changes in sleep patterns (insomnia or oversleeping)? (yes/no)",
+                "key": "sleep_changes",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have difficulty concentrating or making decisions? (yes/no)",
+                "key": "concentration",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Have you noticed changes in appetite or weight? (yes/no)",
+                "key": "appetite_changes",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you had thoughts of self-harm or suicide? (yes/no)",
+                "key": "self_harm",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "self_harm": 0.4,
+            "sadness": 0.3,
+            "sleep_changes": 0.2,
+            "concentration": 0.1
+        },
+        "specialist": [
+            "Psychiatrist"
+        ]
+    },
+    "Anxiety Disorders": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you feel excessive worry or fear most of the time? (yes/no)",
+                "key": "worry",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Are you experiencing rapid heartbeat or sweating? (yes/no)",
+                "key": "physical_symptoms",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have difficulty sleeping due to your anxiety? (yes/no)",
+                "key": "sleep_issues",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Does your anxiety interfere with daily tasks or relationships? (yes/no)",
+                "key": "interference",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you avoid situations or places due to fear? (yes/no)",
+                "key": "avoidance",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "worry": 0.3,
+            "physical_symptoms": 0.3,
+            "interference": 0.2,
+            "avoidance": 0.2
+        },
+        "specialist": [
+            "Psychiatrist"
+        ]
+    },
+    "Platelet Function Disorders": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you bruise easily or experience frequent bleeding? (yes/no)",
+                "key": "bruising_bleeding",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Have you had any unusual nosebleeds or gum bleeding? (yes/no)",
+                "key": "nosebleeds_gum_bleeding",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Are you experiencing delayed or prolonged bleeding after minor cuts? (yes/no)",
+                "key": "delayed_bleeding",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have a history of easy bruising? (yes/no)",
+                "key": "easy_bruising",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a family history of bleeding disorders? (yes/no)",
+                "key": "family_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "bruising_bleeding": 0.3,
+            "delayed_bleeding": 0.3,
+            "nosebleeds_gum_bleeding": 0.2,
+            "easy_bruising": 0.2
+        },
+        "specialist": [
+            "Hematologist"
+        ]
+    },
+    "Coronary Artery Disease (CAD)": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience chest pain or discomfort? (yes/no)",
+                "key": "chest_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you feel shortness of breath, especially during physical activity? (yes/no)",
+                "key": "shortness_breath",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have a history of high blood pressure or high cholesterol? (yes/no)",
+                "key": "high_bp_cholesterol",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Are you experiencing fatigue or weakness? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you experience dizziness or lightheadedness? (yes/no)",
+                "key": "dizziness",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "chest_pain": 0.4,
+            "shortness_breath": 0.3,
+            "high_bp_cholesterol": 0.2,
+            "dizziness": 0.1
+        },
+        "specialist": [
+            "Cardiologist"
+        ]
+    },
+    "Heart Failure": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience swelling in your ankles, legs, or abdomen? (yes/no)",
+                "key": "swelling",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you feel breathless when lying down or after mild exertion? (yes/no)",
+                "key": "breathlessness",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Are you experiencing fatigue or weakness even after rest? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have rapid or irregular heartbeats? (yes/no)",
+                "key": "irregular_heartbeat",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you experienced a sudden weight gain in a short period of time? (yes/no)",
+                "key": "rapid_weight_gain",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "breathlessness": 0.4,
+            "swelling": 0.3,
+            "fatigue": 0.2,
+            "rapid_weight_gain": 0.1
+        },
+        "specialist": [
+            "Cardiologist"
+        ]
+    },
+    "Valvular Heart Disease": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience shortness of breath, especially when exercising? (yes/no)",
+                "key": "shortness_breath",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you feel fatigued or weak even after resting? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have irregular heartbeats or palpitations? (yes/no)",
+                "key": "irregular_heartbeat",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Are you experiencing swelling in your legs, ankles, or abdomen? (yes/no)",
+                "key": "swelling",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a history of heart murmurs or valve problems? (yes/no)",
+                "key": "heart_murmurs",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "shortness_breath": 0.3,
+            "fatigue": 0.3,
+            "irregular_heartbeat": 0.2,
+            "swelling": 0.2
+        },
+        "specialist": [
+            "Cardiologist"
+        ]
+    },
+    "Urinary Tract Infection (UTI)": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you have a burning sensation while urinating? (yes/no)",
+                "key": "burning_sensation",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Have you noticed any unusual or strong-smelling urine? (yes/no)",
+                "key": "unusual_urine",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience frequent urges to urinate, even if little urine is produced? (yes/no)",
+                "key": "frequent_urges",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have lower abdominal pain or discomfort? (yes/no)",
+                "key": "abdominal_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you experienced fever or chills along with the symptoms? (yes/no)",
+                "key": "fever_chills",
+                "type": "yesno"
+            },
+            {
+                "id": 6,
+                "text": "Do you feel pain in your lower back or sides? (yes/no)",
+                "key": "back_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 7,
+                "text": "Have you noticed blood in your urine? (yes/no)",
+                "key": "blood_in_urine",
+                "type": "yesno"
+            },
+            {
+                "id": 8,
+                "text": "Are you feeling generally fatigued or unwell? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "burning_sensation": 0.3,
+            "frequent_urges": 0.2,
+            "abdominal_pain": 0.2,
+            "fever_chills": 0.2,
+            "blood_in_urine": 0.1
+        },
+        "specialist": [
+            "Urologist"
+        ]
+    },
+    "Kidney Stones": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience severe pain in your lower back or side? (yes/no)",
+                "key": "back_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Is the pain sharp and comes in waves? (yes/no)",
+                "key": "wave_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Have you noticed blood in your urine? (yes/no)",
+                "key": "blood_in_urine",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you feel nauseous or vomit when the pain occurs? (yes/no)",
+                "key": "nausea_vomiting",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have difficulty urinating or feel the urge frequently? (yes/no)",
+                "key": "difficulty_urinating",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "back_pain": 0.4,
+            "wave_pain": 0.3,
+            "blood_in_urine": 0.2,
+            "nausea_vomiting": 0.1
+        },
+        "specialist": [
+            "Urologist"
+        ]
+    },
+    "Urinary Incontinence": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience involuntary urine leakage when sneezing or coughing? (yes/no)",
+                "key": "sneezing_coughing",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you have a frequent urge to urinate, but sometimes cannot reach the toilet in time? (yes/no)",
+                "key": "urgent_urination",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have difficulty controlling your bladder after drinking fluids? (yes/no)",
+                "key": "difficulty_controlling",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Have you noticed a leakage when laughing or during physical activity? (yes/no)",
+                "key": "leakage_activity",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you experience a sense of urgency to urinate even if you have just urinated? (yes/no)",
+                "key": "urgency_after_urination",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "sneezing_coughing": 0.3,
+            "urgent_urination": 0.3,
+            "difficulty_controlling": 0.2,
+            "leakage_activity": 0.1
+        },
+        "specialist": [
+            "Urologist"
+        ]
+    },
+    "Hematuria (Blood in Urine)": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Have you noticed blood in your urine, or is it a pink/red color? (yes/no)",
+                "key": "blood_in_urine",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you have pain or discomfort during urination? (yes/no)",
+                "key": "pain_urination",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have a history of urinary tract infections or kidney stones? (yes/no)",
+                "key": "UTI_kidney_stones",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you experience any back or abdominal pain along with blood in urine? (yes/no)",
+                "key": "back_abdominal_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you noticed any swelling in your legs or feet? (yes/no)",
+                "key": "swelling",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "blood_in_urine": 0.5,
+            "pain_urination": 0.3,
+            "back_abdominal_pain": 0.1,
+            "swelling": 0.1
+        },
+        "specialist": [
+            "Urologist"
+        ]
+    },
+    "Urinary Retention": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you have difficulty starting to urinate? (yes/no)",
+                "key": "difficulty_starting",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you feel like your bladder is not empty after urinating? (yes/no)",
+                "key": "bladder_not_empty",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience a slow or weak urine stream? (yes/no)",
+                "key": "slow_weak_stream",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you feel pain or discomfort in your lower abdomen or pelvic area? (yes/no)",
+                "key": "lower_abdomen_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Are you unable to urinate even if you feel the urge? (yes/no)",
+                "key": "unable_to_urinate",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "difficulty_starting": 0.3,
+            "bladder_not_empty": 0.3,
+            "slow_weak_stream": 0.2,
+            "lower_abdomen_pain": 0.2
+        },
+        "specialist": [
+            "Urologist"
+        ]
+    },
+    "Anemia": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you often feel fatigued or weak? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you experience shortness of breath during normal activities? (yes/no)",
+                "key": "shortness_of_breath",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Have you noticed pale skin or nail beds? (yes/no)",
+                "key": "pale_skin",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you feel dizzy or lightheaded often? (yes/no)",
+                "key": "dizziness",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a history of iron deficiency or vitamin B12 deficiency? (yes/no)",
+                "key": "nutrient_deficiency",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "fatigue": 0.4,
+            "shortness_of_breath": 0.3,
+            "pale_skin": 0.2,
+            "dizziness": 0.1
+        },
+        "specialist": [
+            "Hematologist"
+        ]
+    },
+    "Hemophilia": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you bruise easily or experience excessive bruising? (yes/no)",
+                "key": "bruising",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Have you experienced excessive bleeding during minor cuts or injuries? (yes/no)",
+                "key": "excessive_bleeding",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you bleed longer than usual after dental procedures or surgeries? (yes/no)",
+                "key": "bleeding_after_procedures",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have joint pain or swelling due to internal bleeding? (yes/no)",
+                "key": "joint_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you had any spontaneous bleeding, such as nosebleeds or gum bleeding? (yes/no)",
+                "key": "spontaneous_bleeding",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "bruising": 0.3,
+            "excessive_bleeding": 0.4,
+            "bleeding_after_procedures": 0.2,
+            "joint_pain": 0.1
+        },
+        "specialist": [
+            "Hematologist"
+        ]
+    },
+    "Leukemia": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Have you experienced unexplained weight loss? (yes/no)",
+                "key": "weight_loss",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you often feel fatigued or have a lack of energy? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Have you had frequent infections or fevers? (yes/no)",
+                "key": "infections_fever",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you experience pain or swelling in the bones or joints? (yes/no)",
+                "key": "bone_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you noticed unusual bleeding or bruising, such as from small cuts? (yes/no)",
+                "key": "bleeding_bruising",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "weight_loss": 0.3,
+            "fatigue": 0.3,
+            "infections_fever": 0.2,
+            "bone_pain": 0.2
+        },
+        "specialist": [
+            "Hematologist/Oncologist"
+        ]
+    },
+    "Sickle Cell Disease": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience episodes of severe pain, especially in your chest, arms, or legs? (yes/no)",
+                "key": "pain_episodes",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Have you noticed swelling in your hands or feet? (yes/no)",
+                "key": "swelling",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience frequent infections? (yes/no)",
+                "key": "frequent_infections",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you feel fatigued or unusually tired even after rest? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you had any vision problems, such as blurry or loss of vision? (yes/no)",
+                "key": "vision_problems",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "pain_episodes": 0.4,
+            "swelling": 0.3,
+            "frequent_infections": 0.2,
+            "fatigue": 0.1
+        },
+        "specialist": [
+            "Hematologist"
+        ]
+    },
+    "Polycystic Ovary Syndrome (PCOS)": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you have irregular or infrequent periods? (yes/no)",
+                "key": "irregular_periods",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you experience excessive hair growth on your face or body? (yes/no)",
+                "key": "excessive_hair_growth",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Have you noticed acne or oily skin? (yes/no)",
+                "key": "acne_oily_skin",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you experience difficulty losing weight? (yes/no)",
+                "key": "difficulty_losing_weight",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a family history of PCOS or other hormonal imbalances? (yes/no)",
+                "key": "family_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "irregular_periods": 0.3,
+            "excessive_hair_growth": 0.3,
+            "acne_oily_skin": 0.2,
+            "difficulty_losing_weight": 0.2
+        },
+        "specialist": [
+            "Gynecologist"
+        ]
+    },
+    "Endometriosis": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience severe menstrual cramps? (yes/no)",
+                "key": "menstrual_cramps",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you have pain during or after sexual intercourse? (yes/no)",
+                "key": "pain_intercourse",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience pelvic pain that is not related to your menstrual cycle? (yes/no)",
+                "key": "pelvic_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Have you experienced pain or difficulty while urinating or during bowel movements? (yes/no)",
+                "key": "pain_urination_bowel",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you experience heavy periods or bleeding between periods? (yes/no)",
+                "key": "heavy_bleeding",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "menstrual_cramps": 0.3,
+            "pain_intercourse": 0.3,
+            "pelvic_pain": 0.2,
+            "pain_urination_bowel": 0.1,
+            "heavy_bleeding": 0.1
+        },
+        "specialist": [
+            "Gynecologist"
+        ]
+    },
+    "Breast Cancer": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you notice any lumps or changes in the size or shape of your breast? (yes/no)",
+                "key": "breast_lumps",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you experience any pain or tenderness in your breast or underarm? (yes/no)",
+                "key": "breast_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Have you noticed any unusual discharge from your nipple? (yes/no)",
+                "key": "nipple_discharge",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have a family history of breast cancer or genetic mutations related to breast cancer? (yes/no)",
+                "key": "family_history",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you noticed any skin changes, such as redness, puckering, or thickening? (yes/no)",
+                "key": "skin_changes",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "breast_lumps": 0.4,
+            "breast_pain": 0.2,
+            "nipple_discharge": 0.2,
+            "family_history": 0.1,
+            "skin_changes": 0.1
+        },
+        "specialist": [
+            "Oncologist"
+        ]
+    },
+    "Ovarian Cancer": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience bloating or a feeling of fullness in the abdomen? (yes/no)",
+                "key": "abdominal_bloating",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you have pelvic pain or discomfort, especially during intercourse? (yes/no)",
+                "key": "pelvic_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience frequent urination or difficulty emptying your bladder? (yes/no)",
+                "key": "frequent_urination",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have unexplained weight loss or fatigue? (yes/no)",
+                "key": "weight_loss_fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you experienced changes in your bowel movements, such as constipation or diarrhea? (yes/no)",
+                "key": "bowel_changes",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "abdominal_bloating": 0.3,
+            "pelvic_pain": 0.3,
+            "frequent_urination": 0.2,
+            "weight_loss_fatigue": 0.1,
+            "bowel_changes": 0.1
+        },
+        "specialist": [
+            "Oncologist"
+        ]
+    },
+    "Cervical Cancer": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience abnormal vaginal bleeding, such as between periods or after intercourse? (yes/no)",
+                "key": "abnormal_bleeding",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you have unusual vaginal discharge that is foul-smelling or watery? (yes/no)",
+                "key": "unusual_discharge",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience pelvic pain or pain during intercourse? (yes/no)",
+                "key": "pelvic_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Have you had a history of HPV (Human Papillomavirus) infection or abnormal Pap smears? (yes/no)",
+                "key": "hpv_history",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have unexplained weight loss or fatigue? (yes/no)",
+                "key": "weight_loss_fatigue",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "abnormal_bleeding": 0.4,
+            "unusual_discharge": 0.3,
+            "pelvic_pain": 0.2,
+            "hpv_history": 0.1
+        },
+        "specialist": [
+            "Oncologist"
+        ]
+    },
+    "Fibroids": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience heavy or prolonged menstrual bleeding? (yes/no)",
+                "key": "heavy_bleeding",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you experience pelvic pain or pressure? (yes/no)",
+                "key": "pelvic_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have frequent urination or difficulty emptying your bladder? (yes/no)",
+                "key": "urination_problems",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have lower back pain or pain during intercourse? (yes/no)",
+                "key": "back_pain_intercourse",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you experience constipation or bloating? (yes/no)",
+                "key": "constipation_bloating",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "heavy_bleeding": 0.3,
+            "pelvic_pain": 0.3,
+            "urination_problems": 0.2,
+            "back_pain_intercourse": 0.1,
+            "constipation_bloating": 0.1
+        },
+        "specialist": [
+            "Gynecologist"
+        ]
+    },
+    "Menstrual Disorders": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience irregular menstrual cycles or missed periods? (yes/no)",
+                "key": "irregular_cycles",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you have unusually heavy or painful periods? (yes/no)",
+                "key": "heavy_painful_periods",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience premenstrual syndrome (PMS) symptoms, such as mood swings, fatigue, or bloating? (yes/no)",
+                "key": "pms_symptoms",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you experience any abnormal bleeding between periods? (yes/no)",
+                "key": "abnormal_bleeding",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you experience painful periods or cramps that affect your daily life? (yes/no)",
+                "key": "painful_cramps",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "irregular_cycles": 0.3,
+            "heavy_painful_periods": 0.3,
+            "pms_symptoms": 0.2,
+            "abnormal_bleeding": 0.1,
+            "painful_cramps": 0.1
+        },
+        "specialist": [
+            "Gynecologist"
+        ]
+    },
+    "Pneumonia": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you have a persistent cough with thick mucus or blood? (yes/no)",
+                "key": "persistent_cough",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you experience chest pain, especially when breathing or coughing? (yes/no)",
+                "key": "chest_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have difficulty breathing or rapid breathing? (yes/no)",
+                "key": "difficulty_breathing",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you experience fever, chills, or sweating? (yes/no)",
+                "key": "fever_chills",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a history of respiratory infections or weakened immune system? (yes/no)",
+                "key": "history_of_infections",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "persistent_cough": 0.3,
+            "chest_pain": 0.2,
+            "difficulty_breathing": 0.3,
+            "fever_chills": 0.1,
+            "history_of_infections": 0.1
+        },
+        "specialist": [
+            "Pulmonologist"
+        ]
+    },
+    "Lung Cancer": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you have a persistent cough or coughing up blood? (yes/no)",
+                "key": "persistent_cough_blood",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you experience chest pain or tightness? (yes/no)",
+                "key": "chest_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience unexplained weight loss or fatigue? (yes/no)",
+                "key": "weight_loss_fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have a history of smoking or exposure to carcinogens? (yes/no)",
+                "key": "smoking_exposure",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you experience difficulty breathing or wheezing? (yes/no)",
+                "key": "difficulty_breathing",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "persistent_cough_blood": 0.4,
+            "chest_pain": 0.2,
+            "weight_loss_fatigue": 0.2,
+            "smoking_exposure": 0.1,
+            "difficulty_breathing": 0.1
+        },
+        "specialist": [
+            "Oncologist"
+        ]
+    },
+    "Bronchitis": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you have a persistent cough with mucus? (yes/no)",
+                "key": "persistent_cough_mucus",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you experience chest tightness or discomfort? (yes/no)",
+                "key": "chest_tightness",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience shortness of breath or wheezing? (yes/no)",
+                "key": "shortness_of_breath",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have a history of smoking or exposure to lung irritants? (yes/no)",
+                "key": "smoking_history",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have frequent respiratory infections or colds? (yes/no)",
+                "key": "frequent_infections",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "persistent_cough_mucus": 0.3,
+            "chest_tightness": 0.2,
+            "shortness_of_breath": 0.3,
+            "smoking_history": 0.1,
+            "frequent_infections": 0.1
+        },
+        "specialist": [
+            "Pulmonologist"
+        ]
+    },
+    "Interstitial Lung Disease": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience shortness of breath, even during normal activities? (yes/no)",
+                "key": "shortness_of_breath",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you have a dry, persistent cough that doesn't improve? (yes/no)",
+                "key": "persistent_cough",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you feel fatigued or easily tired? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you experience chest discomfort or tightness? (yes/no)",
+                "key": "chest_discomfort",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you been exposed to environmental or occupational lung irritants? (yes/no)",
+                "key": "environmental_exposure",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "shortness_of_breath": 0.3,
+            "persistent_cough": 0.3,
+            "fatigue": 0.2,
+            "chest_discomfort": 0.1,
+            "environmental_exposure": 0.1
+        },
+        "specialist": [
+            "Pulmonologist"
+        ]
+    },
+    "Back Pain": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Is the pain localized or does it radiate to other areas (e.g., legs)? (localized/radiating)",
+                "key": "pain_type",
+                "type": "text"
+            },
+            {
+                "id": 2,
+                "text": "How long have you been experiencing back pain? (in days)",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 3,
+                "text": "Does the pain worsen with movement or activity? (yes/no)",
+                "key": "movement_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Have you experienced numbness or weakness in your legs? (yes/no)",
+                "key": "numbness",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a history of injury or trauma to your back? (yes/no)",
+                "key": "injury_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "pain_type": 0.2,
+            "duration": 0.3,
+            "movement_pain": 0.2,
+            "numbness": 0.2,
+            "injury_history": 0.1
+        },
+        "specialist": [
+            "Orthopedic Surgeon"
+        ]
+    },
+    "Neck Pain": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Is the neck pain localized or does it radiate to shoulders or arms? (localized/radiating)",
+                "key": "pain_type",
+                "type": "text"
+            },
+            {
+                "id": 2,
+                "text": "How long have you been experiencing neck pain? (in days)",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 3,
+                "text": "Does the pain worsen with neck movement or posture? (yes/no)",
+                "key": "movement_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have stiffness or reduced mobility in your neck? (yes/no)",
+                "key": "stiffness",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you had a recent injury or strain in your neck? (yes/no)",
+                "key": "injury_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "pain_type": 0.2,
+            "duration": 0.3,
+            "movement_pain": 0.2,
+            "stiffness": 0.2,
+            "injury_history": 0.1
+        },
+        "specialist": [
+            "Orthopedic Surgeon"
+        ]
+    },
+    "Eye Pain": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience redness or irritation in the eye? (yes/no)",
+                "key": "redness",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you have sensitivity to light? (yes/no)",
+                "key": "light_sensitivity",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Are you experiencing blurred vision? (yes/no)",
+                "key": "blurred_vision",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you feel a foreign body sensation or dryness in the eye? (yes/no)",
+                "key": "dryness",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you recently experienced eye trauma or exposure to chemicals? (yes/no)",
+                "key": "trauma_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "redness": 0.3,
+            "light_sensitivity": 0.2,
+            "blurred_vision": 0.2,
+            "dryness": 0.2,
+            "trauma_history": 0.1
+        },
+        "specialist": [
+            "Ophthalmologist"
+        ]
+    },
+    "Ear Pain": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Do you experience hearing loss or muffled hearing? (yes/no)",
+                "key": "hearing_loss",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "Do you have fluid discharge or pus from the ear? (yes/no)",
+                "key": "discharge",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you experience ringing or buzzing in the ear? (yes/no)",
+                "key": "tinnitus",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have dizziness or vertigo? (yes/no)",
+                "key": "dizziness",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you had a recent cold, sinus infection, or trauma to the ear? (yes/no)",
+                "key": "infection_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "hearing_loss": 0.3,
+            "discharge": 0.2,
+            "tinnitus": 0.2,
+            "dizziness": 0.2,
+            "infection_history": 0.1
+        },
+        "specialist": [
+            "ENT Specialist"
+        ]
+    },
+    "Running Nose": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you had a running nose? (in days)",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Is the nasal discharge clear, yellow, or green? (clear/yellow/green)",
+                "key": "discharge_type",
+                "type": "text"
+            },
+            {
+                "id": 3,
+                "text": "Do you have nasal congestion? (yes/no)",
+                "key": "congestion",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Are you experiencing sneezing? (yes/no)",
+                "key": "sneezing",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a fever? (yes/no)",
+                "key": "fever",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "discharge_type": 0.3,
+            "congestion": 0.2,
+            "sneezing": 0.1,
+            "fever": 0.1
+        },
+        "specialist": [
+            "ENT Specialist"
+        ]
+    },
+    "Body Pains": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Is the pain localized to a specific area or generalized? (localized/generalized)",
+                "key": "pain_location",
+                "type": "text"
+            },
+            {
+                "id": 2,
+                "text": "How long have you been experiencing body pain? (in days)",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 3,
+                "text": "Is the pain accompanied by fatigue or weakness? (yes/no)",
+                "key": "fatigue",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have a fever or chills? (yes/no)",
+                "key": "fever",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you recently engaged in strenuous physical activity? (yes/no)",
+                "key": "activity",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "pain_location": 0.2,
+            "duration": 0.3,
+            "fatigue": 0.2,
+            "fever": 0.2,
+            "activity": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Rashes": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you had the rash? (in days)",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Is the rash itchy or painful? (itchy/painful)",
+                "key": "rash_type",
+                "type": "text"
+            },
+            {
+                "id": 3,
+                "text": "Are there any blisters, swelling, or redness? (yes/no)",
+                "key": "blisters",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Have you recently used any new products (e.g., creams, detergents)? (yes/no)",
+                "key": "product_exposure",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a fever or other symptoms like swelling? (yes/no)",
+                "key": "associated_symptoms",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "rash_type": 0.2,
+            "blisters": 0.2,
+            "product_exposure": 0.2,
+            "associated_symptoms": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Headache": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you been experiencing the headache? (in hours/days)",
+                "key": "duration",
+                "type": "text"
+            },
+            {
+                "id": 2,
+                "text": "Is the pain dull, sharp, or throbbing? (dull/sharp/throbbing)",
+                "key": "pain_type",
+                "type": "text"
+            },
+            {
+                "id": 3,
+                "text": "Is the pain localized (e.g., forehead, temples) or generalized? (localized/generalized)",
+                "key": "pain_location",
+                "type": "text"
+            },
+            {
+                "id": 4,
+                "text": "Do you have nausea, vomiting, or sensitivity to light or sound? (yes/no)",
+                "key": "associated_symptoms",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you recently experienced stress, poor sleep, or skipped meals? (yes/no)",
+                "key": "trigger_factors",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "pain_type": 0.2,
+            "pain_location": 0.2,
+            "associated_symptoms": 0.2,
+            "trigger_factors": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Breathing Problem": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "Are you experiencing shortness of breath or difficulty breathing? (yes/no)",
+                "key": "shortness_of_breath",
+                "type": "yesno"
+            },
+            {
+                "id": 2,
+                "text": "How long have you had this issue? (in hours/days)",
+                "key": "duration",
+                "type": "text"
+            },
+            {
+                "id": 3,
+                "text": "Do you have any wheezing or noisy breathing? (yes/no)",
+                "key": "wheezing",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Are you experiencing chest tightness or pain? (yes/no)",
+                "key": "chest_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a history of asthma, allergies, or respiratory infections? (yes/no)",
+                "key": "medical_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "shortness_of_breath": 0.3,
+            "duration": 0.3,
+            "wheezing": 0.2,
+            "chest_pain": 0.1,
+            "medical_history": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Vomiting Sensation": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you been experiencing nausea or vomiting? (in hours/days)",
+                "key": "duration",
+                "type": "text"
+            },
+            {
+                "id": 2,
+                "text": "Have you vomited, or is it just a sensation of nausea? (vomited/nausea)",
+                "key": "vomiting_status",
+                "type": "text"
+            },
+            {
+                "id": 3,
+                "text": "Are you experiencing abdominal pain or discomfort? (yes/no)",
+                "key": "abdominal_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have a fever or signs of dehydration (e.g., dry mouth)? (yes/no)",
+                "key": "fever_or_dehydration",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you recently consumed food that could be spoiled or contaminated? (yes/no)",
+                "key": "food_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "vomiting_status": 0.3,
+            "abdominal_pain": 0.2,
+            "fever_or_dehydration": 0.2,
+            "food_history": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Tiredness": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you been feeling tired? (in hours/days)",
+                "key": "duration",
+                "type": "text"
+            },
+            {
+                "id": 2,
+                "text": "Is the tiredness mild, moderate, or severe? (mild/moderate/severe)",
+                "key": "severity",
+                "type": "text"
+            },
+            {
+                "id": 3,
+                "text": "Are you also experiencing dizziness, weakness, or difficulty concentrating? (yes/no)",
+                "key": "associated_symptoms",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Have you been sleeping well or had a recent increase in physical/mental workload? (yes/no)",
+                "key": "sleep_or_workload",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a known medical condition such as anemia or thyroid issues? (yes/no)",
+                "key": "medical_condition",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "severity": 0.3,
+            "associated_symptoms": 0.2,
+            "sleep_or_workload": 0.1,
+            "medical_condition": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Loose Motions": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How many episodes of loose stools have you had in the past 24 hours?",
+                "key": "frequency",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "How long have you been experiencing loose motions? (in hours/days)",
+                "key": "duration",
+                "type": "text"
+            },
+            {
+                "id": 3,
+                "text": "Are you experiencing abdominal pain or cramps? (yes/no)",
+                "key": "abdominal_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you notice any blood or mucus in the stools? (yes/no)",
+                "key": "blood_or_mucus",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you been drinking enough water to stay hydrated? (yes/no)",
+                "key": "hydration_status",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "frequency": 0.3,
+            "duration": 0.3,
+            "abdominal_pain": 0.2,
+            "blood_or_mucus": 0.2,
+            "hydration_status": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Mouth Ulcers": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you had the mouth ulcer(s)? (in days)",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Are the ulcers causing pain or difficulty in eating or drinking? (yes/no)",
+                "key": "pain_or_difficulty",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have multiple ulcers or just one? (multiple/single)",
+                "key": "number_of_ulcers",
+                "type": "text"
+            },
+            {
+                "id": 4,
+                "text": "Have you noticed any swelling, bleeding, or white patches near the ulcers? (yes/no)",
+                "key": "associated_symptoms",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you been under stress or recently consumed spicy or acidic foods? (yes/no)",
+                "key": "trigger_factors",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "pain_or_difficulty": 0.3,
+            "number_of_ulcers": 0.2,
+            "associated_symptoms": 0.1,
+            "trigger_factors": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Throat Pain": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you been experiencing throat pain? (in days)",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Is the pain sharp, scratchy, or dull? (sharp/scratchy/dull)",
+                "key": "pain_type",
+                "type": "text"
+            },
+            {
+                "id": 3,
+                "text": "Do you have a fever or swollen lymph nodes? (yes/no)",
+                "key": "fever_or_swelling",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Are you experiencing difficulty swallowing or speaking? (yes/no)",
+                "key": "difficulty",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you recently been exposed to cold weather or allergens? (yes/no)",
+                "key": "exposure",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "pain_type": 0.2,
+            "fever_or_swelling": 0.2,
+            "difficulty": 0.2,
+            "exposure": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Sinus": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you been experiencing sinus issues? (in days)",
+                "key": "duration",
+                "type": "number"
+            },
+            {
+                "id": 2,
+                "text": "Do you have nasal congestion or a runny nose? (yes/no)",
+                "key": "nasal_congestion",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Are you experiencing facial pain, pressure, or swelling? (yes/no)",
+                "key": "facial_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Do you have a headache or fever? (yes/no)",
+                "key": "headache_or_fever",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you feel post-nasal drip or throat irritation? (yes/no)",
+                "key": "post_nasal_drip",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "nasal_congestion": 0.2,
+            "facial_pain": 0.2,
+            "headache_or_fever": 0.2,
+            "post_nasal_drip": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Indigestion": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you been experiencing indigestion? (in hours/days)",
+                "key": "duration",
+                "type": "text"
+            },
+            {
+                "id": 2,
+                "text": "Are you feeling bloated or excessively full after eating? (yes/no)",
+                "key": "bloating",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have abdominal discomfort or pain? (yes/no)",
+                "key": "abdominal_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Have you experienced nausea or a burning sensation in your stomach or chest? (yes/no)",
+                "key": "burning_or_nausea",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Have you recently consumed spicy, fatty, or large meals? (yes/no)",
+                "key": "dietary_triggers",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "bloating": 0.2,
+            "abdominal_pain": 0.2,
+            "burning_or_nausea": 0.2,
+            "dietary_triggers": 0.1
+        },
+        "specialist": [
+            "General Physician"
+        ]
+    },
+    "Gastric Issues": {
+        "questions": [
+            {
+                "id": 1,
+                "text": "How long have you been experiencing gas or bloating? (in hours/days)",
+                "key": "duration",
+                "type": "text"
+            },
+            {
+                "id": 2,
+                "text": "Do you have frequent burping, flatulence, or a feeling of pressure in your abdomen? (yes/no)",
+                "key": "pressure_or_flatulence",
+                "type": "yesno"
+            },
+            {
+                "id": 3,
+                "text": "Do you have abdominal pain or cramping? (yes/no)",
+                "key": "abdominal_pain",
+                "type": "yesno"
+            },
+            {
+                "id": 4,
+                "text": "Have you recently consumed carbonated drinks, beans, or other gas-inducing foods? (yes/no)",
+                "key": "dietary_triggers",
+                "type": "yesno"
+            },
+            {
+                "id": 5,
+                "text": "Do you have a history of constipation or irregular bowel movements? (yes/no)",
+                "key": "bowel_history",
+                "type": "yesno"
+            }
+        ],
+        "severityFormula": {
+            "duration": 0.3,
+            "pressure_or_flatulence": 0.2,
+            "abdominal_pain": 0.2,
+            "dietary_triggers": 0.2,
+            "bowel_history": 0.1
+        },
+        "specialist": [
+            "General Physician",
+            "Gastroenterologist"
+        ]
+    }
+}
