@@ -51,7 +51,7 @@ const Blogs = () => {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
-        variant: "destructive",
+        // variant: "destructive",
       });
       return;
     }

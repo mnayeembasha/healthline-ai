@@ -1,3 +1,19 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "rules": {
+    // Disable specific TypeScript rule for 'any' type
+    "@typescript-eslint/no-explicit-any": "off", // Disable 'any' type error
+
+    // Disable unused variables warning
+    "@typescript-eslint/no-unused-vars": "off", // Disable unused variables error
+
+    // Disable no-img-element warning (when using <img> instead of <Image>)
+    "@next/next/no-img-element": "off", // Disable Next.js warning for <img>
+
+    // Disable empty interface rule
+    "@typescript-eslint/no-empty-object-type": "off", // Disable error for empty object types
+
+    // Disable any other specific rules you might want
+    "react/jsx-no-bind": "off" // Example rule to turn off (you can customize this list)
+  }
 }

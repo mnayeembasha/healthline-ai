@@ -41,7 +41,7 @@ const Login = () => {
                 description:
                     (axios.isAxiosError(error) && error.response?.data?.message) ||
                     "Invalid credentials",
-                variant: "destructive",
+                // variant: "destructive",
             });
         }
     };

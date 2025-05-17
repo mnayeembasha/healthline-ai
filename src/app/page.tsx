@@ -1,6 +1,5 @@
 
 
-"use client";
 import {
   Accordion,
   AccordionContent,
@@ -8,9 +7,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { metadata } from "./metadata";
-
-export const pageMetadata = metadata;
+export const metadata = {
+  title: "HealthLine AI",
+  description: "AI-powered virtual health assistant using Next.js for the frontend and Google's Gemini AI for intelligent health report generation. The chatbot analyzes user symptoms, asks follow-up questions, and provides a comprehensive health report detailing condition severity, recommended precautions, and dietary suggestions.",
+  // You can also add other fields like openGraph, Twitter, etc.
+};
 
 
 export default function Home() {

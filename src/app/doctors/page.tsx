@@ -53,7 +53,7 @@ const DoctorPortal = () => {
         toast({
           title: "Error",
           description: "Invalid credentials",
-          variant: "destructive",
+          // variant: "destructive",
         });
       }
     } catch (error) {
@@ -61,7 +61,7 @@ const DoctorPortal = () => {
       toast({
         title: "Error",
         description: "An error occurred during login.",
-        variant: "destructive",
+        // variant: "destructive",
       });
     }
   };
