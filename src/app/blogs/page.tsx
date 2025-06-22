@@ -112,7 +112,7 @@ const Blogs = () => {
 
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="mt-8">Create New Blog</Button>
+              {/* <Button className="mt-8">Create New Blog</Button> */}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] animate-fade-in">
               <DialogHeader>

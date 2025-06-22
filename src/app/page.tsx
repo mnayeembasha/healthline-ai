@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 export const metadata = {
   title: "HealthLine AI",
   description: "AI-powered virtual health assistant using Next.js for the frontend and Google's Gemini AI for intelligent health report generation. The chatbot analyzes user symptoms, asks follow-up questions, and provides a comprehensive health report detailing condition severity, recommended precautions, and dietary suggestions.",
@@ -54,10 +55,11 @@ export default function Home() {
               Experience personalized healthcare powered by artificial intelligence
               and telemedicine.
             </p>
-            <Button size="lg" className="mt-8" onClick=()=>window.location.href="/chatbot">
+            <Link href="/chatbot"><Button size="lg" className="mt-8">
               Get Started
             </Button>
-          </div>
+            </Link>
+        </div>
         </div>
       </section>
 
