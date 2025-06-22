@@ -54,7 +54,7 @@ export default function Home() {
               Experience personalized healthcare powered by artificial intelligence
               and telemedicine.
             </p>
-            <Button size="lg" className="mt-8">
+            <Button size="lg" className="mt-8" onClick=()=>window.location.href="/chatbot">
               Get Started
             </Button>
           </div>
