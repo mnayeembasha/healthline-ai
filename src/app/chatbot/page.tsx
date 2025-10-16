@@ -90,7 +90,6 @@ const ChatBot = () => {
       setResponses({});
       setCurrentQuestionIndex(0);
 
-      // Scroll to the question input area when questions are set
       setTimeout(() => {
         questionInputRef.current?.scrollIntoView({ behavior: "smooth" });
       }, 300);
@@ -99,7 +98,6 @@ const ChatBot = () => {
     }
   }, [selectedDiseases]);
 
-  // Scroll to bottom of chat when new messages come in
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -127,119 +125,93 @@ const ChatBot = () => {
       setWaitingForResponse(true);
 
       try {
-        // Structure the request with a detailed prompt for properly formatted sections
-        const promptInstructions = `
-        Based on these symptoms (${selectedDiseases.join(", ")}) and the provided responses, generate a comprehensive health assessment with CLEARLY SEPARATED sections.
-
-        YOUR RESPONSE MUST CONTAIN ALL FIVE OF THESE SECTIONS, each with substantial, specific content:
-
-        1. Summary: Provide a concise overview of the condition and key insights.
-
-        2. Precautions: List specific actions the person should take immediately to manage their condition safely.
-
-        3. Medications: Recommend specific medications or treatments that could help alleviate symptoms, including dosage information when appropriate.
-
-        4. Diet: Provide specific dietary recommendations, including foods to eat and avoid to help manage or improve the condition.
-
-        5. Prevention: Detail specific measures to prevent recurrence or worsening of the condition in the future.
-
-        Format each section with its own heading (e.g., "Summary:") and ensure each section has meaningful, detailed content. DO NOT return empty sections or generic placeholders.
-        DO NOT use asterisks (*) for formatting or bullet points.
-        Use proper formatting without markdown symbols visible in the output.
-        `;
-
         const response = await fetch("/api/get-response", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             responses,
             diseases: selectedDiseases,
-            promptInstructions: promptInstructions,
-            responseFormat: {
-              structure: "json",
-              sections: ["summary", "precautions", "medications", "diet", "prevention"]
-            }
           }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
-          const severityValue = calculateSeverity();
-          setSeverity(severityValue);
-
           let parsedReport: DiagnosisResponse;
 
-          // Try to parse the response as JSON first
-          try {
-            // If the response is already in JSON format
-            if (typeof data.message === 'object') {
-              parsedReport = {
-                summary: data.message.summary || "",
-                precautions: data.message.precautions || "",
-                medications: data.message.medications || "",
-                diet: data.message.diet || "",
-                prevention: data.message.prevention || ""
-              };
+          if (typeof data.message === 'object') {
+            parsedReport = {
+              summary: data.message.summary || "",
+              precautions: data.message.precautions || "",
+              medications: data.message.medications || "",
+              diet: data.message.diet || "",
+              prevention: data.message.prevention || ""
+            };
+            
+            // Use AI-provided severity or fallback to calculated
+            const aiSeverity = data.message.severity || data.severity;
+            const aiSeverityScore = data.message.severityScore || data.severityScore;
+            
+            if (aiSeverity && aiSeverityScore) {
+              setSeverity(parseFloat(aiSeverityScore));
+              console.log("Using AI-provided severity:", aiSeverity, aiSeverityScore);
             } else {
-              // Handle string format with improved parsing
-              parsedReport = parseReportSections(data.message);
+              const severityValue = calculateSeverity();
+              setSeverity(severityValue);
+              console.log("Using calculated severity:", severityValue);
             }
-          } catch (error) {
-            console.log(error);
-            // Fallback to regex parsing if JSON parsing fails
-            parsedReport = parseReportSections(data.message);
-          }
-
-          // Remove default placeholder text by setting empty strings
-          if (parsedReport.summary === "Based on your symptoms, a detailed summary couldn't be generated.") {
-            parsedReport.summary = "";
-          }
-          if (parsedReport.precautions === "Take general health precautions and consult a healthcare professional if symptoms worsen.") {
-            parsedReport.precautions = "";
-          }
-          if (parsedReport.medications === "No specific medications can be recommended without a proper medical examination.") {
-            parsedReport.medications = "";
-          }
-          if (parsedReport.diet === "Maintain a balanced diet rich in fruits, vegetables, and adequate hydration.") {
-            parsedReport.diet = "";
-          }
-          if (parsedReport.prevention === "Practice good hygiene, adequate rest, and avoid exposure to triggers.") {
-            parsedReport.prevention = "";
+          } else {
+            const severityValue = calculateSeverity();
+            setSeverity(severityValue);
+            parsedReport = {
+              summary: "",
+              precautions: "",
+              medications: "",
+              diet: "",
+              prevention: ""
+            };
           }
 
           setDiagnosisReport(parsedReport);
 
-          // Clean any markdown artifacts from the text
-          const cleanText = (text: string) => {
-            return text
-              .replace(/\*\*/g, '')  // Remove all asterisks
-              .replace(/\*/g, '')    // Remove all asterisks
-              .replace(/-\s/g, '• ') // Replace dash+space with bullet+space
-              .trim();
+          // Format the text for display - convert numbered lists to HTML
+          const formatSection = (text: string) => {
+            if (!text) return "";
+            
+            // Split by newlines and format
+            const lines = text.split('\n').filter(line => line.trim());
+            const formattedLines = lines.map(line => {
+              const trimmedLine = line.trim();
+              // Check if line starts with number
+              if (/^\d+\./.test(trimmedLine)) {
+                return `<div class="mb-2 pl-4">${trimmedLine}</div>`;
+              }
+              return `<div class="mb-2">${trimmedLine}</div>`;
+            });
+            
+            return formattedLines.join('');
           };
 
-          // Only include sections that have content
           let combinedReport = "";
 
           if (parsedReport.summary) {
-            combinedReport += `<strong>Summary:</strong><br/>${cleanText(parsedReport.summary)}<br/><br/>`;
+            combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-blue-700 mb-3">Summary</h3><div class="text-gray-700">${formatSection(parsedReport.summary)}</div></div>`;
           }
 
           if (parsedReport.precautions) {
-            combinedReport += `<strong>Precautions:</strong><br/>${cleanText(parsedReport.precautions)}<br/><br/>`;
+            combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-blue-700 mb-3">Precautions</h3><div class="text-gray-700">${formatSection(parsedReport.precautions)}</div></div>`;
           }
 
           if (parsedReport.medications) {
-            combinedReport += `<strong>Medications:</strong><br/>${cleanText(parsedReport.medications)}<br/><br/>`;
+            combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-teal-700 mb-3">Medications</h3><div class="text-gray-700">${formatSection(parsedReport.medications)}</div></div>`;
           }
 
           if (parsedReport.diet) {
-            combinedReport += `<strong>Diet:</strong><br/>${cleanText(parsedReport.diet)}<br/><br/>`;
+            combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-teal-700 mb-3">Diet</h3><div class="text-gray-700">${formatSection(parsedReport.diet)}</div></div>`;
           }
 
           if (parsedReport.prevention) {
-            combinedReport += `<strong>Prevention:</strong><br/>${cleanText(parsedReport.prevention)}`;
+            combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-teal-700 mb-3">Prevention</h3><div class="text-gray-700">${formatSection(parsedReport.prevention)}</div></div>`;
           }
 
           const botMessage: Message = {
@@ -262,79 +234,11 @@ const ChatBot = () => {
         toast({
           title: "Error",
           description: "Failed to get diagnosis. Please try again.",
-          // variant: "destructive",
         });
       } finally {
         setWaitingForResponse(false);
       }
     }
-  };
-
-  const parseReportSections = (text: string): DiagnosisResponse => {
-    // Define more flexible patterns for each section with multiple heading possibilities
-    const patterns = {
-      summary: /(?:Summary:?|Assessment:?|Overview:?)(.*?)(?=\n\s*(?:Precautions|Safety|Medications|Diet|Prevention|$))/is,
-      precautions: /(?:Precautions:?|Safety Measures:?|Immediate Actions:?)(.*?)(?=\n\s*(?:Medications|Treatment|Diet|Prevention|$))/is,
-      medications: /(?:Medications:?|(?:Basic )?Medicines:?|Treatment:?)(.*?)(?=\n\s*(?:Diet|Nutrition|Prevention|$))/is,
-      diet: /(?:Diet:?|Dietary Recommendations:?|Nutrition:?)(.*?)(?=\n\s*(?:Prevention|Preventive|$))/is,
-      prevention: /(?:Prevention:?|(?:Measures to )?Prevent Recurrence:?|Preventive Measures:?)(.*?)$/is,
-    };
-
-    // If no sections are found, try to analyze entire text for intelligent content extraction
-    const fullTextFallback = (text: string): DiagnosisResponse => {
-      // Split by double newlines to find potential paragraphs
-      const paragraphs = text.split(/\n\n+/);
-
-      // Default response structure
-      const result: DiagnosisResponse = {
-        summary: "",
-        precautions: "",
-        medications: "",
-        diet: "",
-        prevention: ""
-      };
-
-      // Look for key indicators in each paragraph
-      paragraphs.forEach(para => {
-        const lowerPara = para.toLowerCase();
-
-        // Simple heuristic matching for content types
-        if (lowerPara.includes("summary") || (lowerPara.includes("condition") && !result.summary)) {
-          result.summary = para.replace(/^summary:?\s*/i, "");
-        } else if ((lowerPara.includes("precaution") || lowerPara.includes("safety") || lowerPara.includes("caution")) && !result.precautions) {
-          result.precautions = para.replace(/^precautions:?\s*/i, "");
-        } else if ((lowerPara.includes("medicat") || lowerPara.includes("medicine") || lowerPara.includes("treatment") || lowerPara.includes("drug")) && !result.medications) {
-          result.medications = para.replace(/^medications:?\s*/i, "");
-        } else if ((lowerPara.includes("diet") || lowerPara.includes("food") || lowerPara.includes("eat") || lowerPara.includes("nutrition")) && !result.diet) {
-          result.diet = para.replace(/^diet:?\s*/i, "");
-        } else if ((lowerPara.includes("prevent") || lowerPara.includes("avoid") || lowerPara.includes("future")) && !result.prevention) {
-          result.prevention = para.replace(/^prevention:?\s*/i, "");
-        }
-      });
-
-      return result;
-    };
-
-    // Try structured extraction first
-    const report: DiagnosisResponse = {
-      summary: extractSection(text, patterns.summary),
-      precautions: extractSection(text, patterns.precautions),
-      medications: extractSection(text, patterns.medications),
-      diet: extractSection(text, patterns.diet),
-      prevention: extractSection(text, patterns.prevention)
-    };
-
-    // If most sections are empty, try the fallback method
-    if (!report.summary && !report.precautions && !report.medications && !report.diet && !report.prevention) {
-      return fullTextFallback(text);
-    }
-
-    return report;
-  };
-
-  const extractSection = (text: string, pattern: RegExp): string => {
-    const match = text.match(pattern);
-    return match ? match[1].trim() : "";
   };
 
   const calculateSeverity = (): number => {
@@ -381,6 +285,7 @@ const ChatBot = () => {
 
     // Selected Diseases
     doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
     doc.text("Selected Symptoms:", 10, 30);
     doc.text(selectedDiseases.join(", "), 60, 30);
 
@@ -400,108 +305,72 @@ const ChatBot = () => {
 
     // Severity
     yPos += 10;
-    doc.text(`Severity Score: ${severity} (${getSeverityLabel(severity)})`, 10, yPos);
+    doc.text(`Severity Score: ${severity.toFixed(2)} (${getSeverityLabel(severity)})`, 10, yPos);
 
-    // Clean function to remove markdown artifacts
+    // Clean function for PDF
     const cleanForPDF = (text: string) => {
       return text
-        .replace(/\*\*/g, '')
-        .replace(/\*/g, '')
-        .replace(/-\s/g, '- ') // Keep dash format for PDF
+        .replace(/\n/g, ' ')
+        .replace(/\s+/g, ' ')
         .trim();
     };
 
-    // Add each section to PDF only if it has content
-    yPos += 15;
-
-    // Summary
-    if (diagnosisReport.summary) {
+    const addSection = (title: string, content: string) => {
+      if (!content) return yPos;
+      
+      yPos += 15;
+      if (yPos > 270) {
+        doc.addPage();
+        yPos = 20;
+      }
+      
       doc.setFont("helvetica", "bold");
-      doc.text("Summary:", 10, yPos);
+      doc.text(title, 10, yPos);
       doc.setFont("helvetica", "normal");
-      yPos += 10;
-      const summaryLines = doc.splitTextToSize(cleanForPDF(diagnosisReport.summary), 180);
-      summaryLines.forEach((line: string | string[]) => {
+      yPos += 7;
+      
+      const cleanContent = cleanForPDF(content);
+      const lines = doc.splitTextToSize(cleanContent, 180);
+      
+      lines.forEach((line: string) => {
         if (yPos > 280) {
           doc.addPage();
           yPos = 20;
         }
         doc.text(line, 10, yPos);
-        yPos += 7;
+        yPos += 6;
       });
-    }
+      
+      return yPos;
+    };
 
-    // Precautions
-    if (diagnosisReport.precautions) {
+    // Add sections
+    yPos = addSection("Summary:", diagnosisReport.summary);
+    yPos = addSection("Precautions:", diagnosisReport.precautions);
+    yPos = addSection("Medications:", diagnosisReport.medications);
+    yPos = addSection("Diet:", diagnosisReport.diet);
+    yPos = addSection("Prevention:", diagnosisReport.prevention);
+
+    // Add disclaimer
+    yPos += 10;
+    if (yPos > 260) {
+      doc.addPage();
+      yPos = 20;
+    }
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "italic");
+    const disclaimer = doc.splitTextToSize(
+      "Disclaimer: This information is for general knowledge and does not constitute medical advice. Consult a healthcare professional for proper diagnosis and treatment.",
+      180
+    );
+    disclaimer.forEach((line: string) => {
+      if (yPos > 280) {
+        doc.addPage();
+        yPos = 20;
+      }
+      doc.text(line, 10, yPos);
       yPos += 5;
-      doc.setFont("helvetica", "bold");
-      doc.text("Precautions:", 10, yPos);
-      doc.setFont("helvetica", "normal");
-      yPos += 10;
-      const precautionLines = doc.splitTextToSize(cleanForPDF(diagnosisReport.precautions), 180);
-      precautionLines.forEach((line: string | string[]) => {
-        if (yPos > 280) {
-          doc.addPage();
-          yPos = 20;
-        }
-        doc.text(line, 10, yPos);
-        yPos += 7;
-      });
-    }
-
-    // Medications
-    if (diagnosisReport.medications) {
-      yPos += 5;
-      doc.setFont("helvetica", "bold");
-      doc.text("Medications:", 10, yPos);
-      doc.setFont("helvetica", "normal");
-      yPos += 10;
-      const medicationLines = doc.splitTextToSize(cleanForPDF(diagnosisReport.medications), 180);
-      medicationLines.forEach((line: string | string[]) => {
-        if (yPos > 280) {
-          doc.addPage();
-          yPos = 20;
-        }
-        doc.text(line, 10, yPos);
-        yPos += 7;
-      });
-    }
-
-    // Diet
-    if (diagnosisReport.diet) {
-      yPos += 5;
-      doc.setFont("helvetica", "bold");
-      doc.text("Diet:", 10, yPos);
-      doc.setFont("helvetica", "normal");
-      yPos += 10;
-      const dietLines = doc.splitTextToSize(cleanForPDF(diagnosisReport.diet), 180);
-      dietLines.forEach((line: string | string[]) => {
-        if (yPos > 280) {
-          doc.addPage();
-          yPos = 20;
-        }
-        doc.text(line, 10, yPos);
-        yPos += 7;
-      });
-    }
-
-    // Prevention
-    if (diagnosisReport.prevention) {
-      yPos += 5;
-      doc.setFont("helvetica", "bold");
-      doc.text("Prevention:", 10, yPos);
-      doc.setFont("helvetica", "normal");
-      yPos += 10;
-      const preventionLines = doc.splitTextToSize(cleanForPDF(diagnosisReport.prevention), 180);
-      preventionLines.forEach((line: string | string[]) => {
-        if (yPos > 280) {
-          doc.addPage();
-          yPos = 20;
-        }
-        doc.text(line, 10, yPos);
-        yPos += 7;
-      });
-    }
+    });
 
     const specialists = selectedDiseases.flatMap(
       (selectedDisease) => (diseases as Diseases)[selectedDisease]?.specialist || []
@@ -518,13 +387,11 @@ const ChatBot = () => {
 
   const sendReportToDoctor = async (severity: number, finalBotResponse: string, specialists: string[]) => {
     try {
-      // Validate input parameters
       if (!specialists || !Array.isArray(specialists) || specialists.length === 0) {
         console.error("Specialists array is required and cannot be empty.");
         return;
       }
 
-      // Make the POST request to fetch doctors
       const response = await axios.post(
         `${API_BASE_URL}/api/doctor/specialists`,
         { specialists },
@@ -535,7 +402,6 @@ const ChatBot = () => {
         }
       );
 
-      // Log the response for debugging
       console.log("Doctors fetched successfully:", response.data.doctors[0].name);
       const doctorId = response.data.doctors[0]._id;
       const addedOp = await axios.post(`${API_BASE_URL}/api/op/add`, {
@@ -552,7 +418,6 @@ const ChatBot = () => {
       console.log(addedOp);
 
     } catch (err) {
-      // Improved error logging
       console.error("Some Error Occurred while Performing database operation:", err);
     }
   };
@@ -583,6 +448,31 @@ const ChatBot = () => {
       title: "Chat Cleared",
       description: "Start a new diagnosis by selecting symptoms.",
     });
+  };
+
+  // Format section for display with proper styling
+  const formatSectionDisplay = (content: string) => {
+    if (!content) return null;
+    
+    const lines = content.split('\n').filter(line => line.trim());
+    
+    return (
+      <div className="space-y-2">
+        {lines.map((line, index) => {
+          const trimmedLine = line.trim();
+          const isNumbered = /^\d+\./.test(trimmedLine);
+          
+          return (
+            <div 
+              key={index} 
+              className={`${isNumbered ? 'pl-0' : ''} text-gray-700 leading-relaxed`}
+            >
+              {trimmedLine}
+            </div>
+          );
+        })}
+      </div>
+    );
   };
 
   return (
@@ -707,7 +597,7 @@ const ChatBot = () => {
               <p className={`text-2xl font-bold ${getSeverityColor(severity)}`}>
                 {getSeverityLabel(severity)}
               </p>
-              <p className="text-xs text-gray-500 mt-1">Score: {severity.toFixed(1)}/10</p>
+              <p className="text-xs text-gray-500 mt-1">Score: {severity.toFixed(2)}/10</p>
             </Card>
 
             <Card className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg shadow-sm">
@@ -723,44 +613,58 @@ const ChatBot = () => {
           <div className="space-y-6">
             {diagnosisReport.summary && (
               <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-lg border border-blue-100 shadow-sm transition-all hover:shadow-md">
-                <h3 className="text-lg font-medium text-blue-600 mb-3">Summary</h3>
-                <div className="text-gray-700 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: diagnosisReport.summary.replace(/\*\*/g, '').replace(/\*/g, '') }}></div>
+                <h3 className="text-lg font-semibold text-blue-700 mb-3 flex items-center gap-2">
+                  <FileTextIcon size={18} /> Summary
+                </h3>
+                <div className="text-gray-700">
+                  {formatSectionDisplay(diagnosisReport.summary)}
+                </div>
               </div>
             )}
 
             {diagnosisReport.precautions && (
-              <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-5 rounded-lg border border-blue-100 shadow-sm transition-all hover:shadow-md">
-                <h3 className="text-lg font-medium text-blue-600 mb-3">Precautions</h3>
-                <div className="text-gray-700 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: diagnosisReport.precautions.replace(/\*\*/g, '').replace(/\*/g, '') }}></div>
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-5 rounded-lg border border-amber-200 shadow-sm transition-all hover:shadow-md">
+                <h3 className="text-lg font-semibold text-amber-700 mb-3 flex items-center gap-2">
+                  <AlertCircleIcon size={18} /> Precautions
+                </h3>
+                <div className="text-gray-700">
+                  {formatSectionDisplay(diagnosisReport.precautions)}
+                </div>
               </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {diagnosisReport.medications && (
-                <div className="bg-gradient-to-r from-teal-50 to-teal-100 p-5 rounded-lg">
-                  <h3 className="text-lg font-medium text-teal-600 mb-3">Medications</h3>
-                  <div className="text-gray-700 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: diagnosisReport.medications.replace(/\*\*/g, '').replace(/\*/g, '') }}></div>
+                <div className="bg-gradient-to-r from-teal-50 to-emerald-50 p-5 rounded-lg border border-teal-200 shadow-sm transition-all hover:shadow-md">
+                  <h3 className="text-lg font-semibold text-teal-700 mb-3">💊 Medications</h3>
+                  <div className="text-gray-700">
+                    {formatSectionDisplay(diagnosisReport.medications)}
                   </div>
+                </div>
               )}
 
               {diagnosisReport.diet && (
-                <div className="bg-gradient-to-r from-teal-50 to-teal-100 p-5 rounded-lg">
-                  <h3 className="text-lg font-medium text-teal-600 mb-3">Diet</h3>
-                  <div className="text-gray-700 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: diagnosisReport.diet.replace(/\*\*/g, '').replace(/\*/g, '') }}></div>
+                <div className="bg-gradient-to-r from-green-50 to-lime-50 p-5 rounded-lg border border-green-200 shadow-sm transition-all hover:shadow-md">
+                  <h3 className="text-lg font-semibold text-green-700 mb-3">🥗 Diet</h3>
+                  <div className="text-gray-700">
+                    {formatSectionDisplay(diagnosisReport.diet)}
                   </div>
+                </div>
               )}
             </div>
 
             {diagnosisReport.prevention && (
-              <div className="bg-gradient-to-r from-teal-50 to-teal-100 p-5 rounded-lg">
-                <h3 className="text-lg font-medium text-teal-600 mb-3">Prevention</h3>
-                <div className="text-gray-700 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: diagnosisReport.prevention.replace(/\*\*/g, '').replace(/\*/g, '') }}></div>
+              <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-5 rounded-lg border border-purple-200 shadow-sm transition-all hover:shadow-md">
+                <h3 className="text-lg font-semibold text-purple-700 mb-3">🛡️ Prevention</h3>
+                <div className="text-gray-700">
+                  {formatSectionDisplay(diagnosisReport.prevention)}
+                </div>
               </div>
             )}
 
             <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
-              <p className="text-sm text-yellow-700">
-                <strong>Disclaimer:</strong> This information is for general knowledge and does not constitute medical advice. If symptoms worsen, persist, or new symptoms arise, seek professional medical evaluation.
+              <p className="text-sm text-yellow-800">
+                <strong>⚠️ Disclaimer:</strong> This information is for general knowledge and does not constitute medical advice. Always consult a qualified healthcare professional for proper diagnosis, treatment, and medical guidance. If symptoms worsen, persist, or new symptoms arise, seek immediate medical attention.
               </p>
             </div>
           </div>
