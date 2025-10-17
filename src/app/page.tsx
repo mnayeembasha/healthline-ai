@@ -46,7 +46,7 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Welcome Section */}
 
-      <section className="min-h-screen w-full relative flex flex-col justify-center items-center overflow-hidden">
+     <section className="min-h-screen w-full relative flex items-center overflow-hidden">
   {/* Radial Gradient Background */}
   <div
     className="absolute inset-0 z-0"
@@ -56,23 +56,37 @@ export default function Home() {
   />
 
   {/* Hero Content */}
-  <div className="container mx-auto px-4 relative z-10">
-    <div className="max-w-4xl leading-tighter mx-auto text-center space-y-6 animate-fade-in">
+  <div className="container mx-auto px-4 relative z-10 flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0">
+    {/* Text Section */}
+    <div className="md:w-1/2 text-center md:text-left space-y-6 animate-fade-in">
       <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
-        Welcome to the Future of <span className="bg-clip-text text-transparent bg-gradient-to-b from-blue-300 via-blue-500 to-blue-700">Healthcare</span>
+        Welcome to the Future of{" "}
+        <span className="bg-clip-text text-transparent bg-gradient-to-b from-blue-300 via-blue-500 to-blue-700">
+          Healthcare
+        </span>
       </h1>
-      <p className="max-w-lg mx-auto text-2xl text-gray-600">
+      <p className="text-xl md:text-2xl text-gray-600 max-w-lg">
         Experience personalized healthcare powered by artificial intelligence
         and telemedicine.
       </p>
       <Link href="/chatbot">
-        <Button size="lg" className="mt-8 bg-gradient-to-b from-blue-400 to-blue-700">
+        <Button size="lg" className="mt-6 bg-gradient-to-b from-blue-400 to-blue-700">
           Get Started
         </Button>
       </Link>
     </div>
+
+    {/* Image Section */}
+    <div className="md:w-1/2 flex justify-center md:justify-end">
+      <img
+        src="https://media.istockphoto.com/id/2199586292/photo/doctors-and-the-virtual-medical-revolution-and-technological-advances-artificial-intelligence.webp?a=1&b=1&s=612x612&w=0&k=20&c=oKlpMDv3t7KDh-0I7eC_mHLIq6KfqJvWi4wZS7obdiE="
+        alt="Healthcare AI"
+        className="w-full max-w-md md:max-w-lg rounded-xl shadow-xl"
+      />
+    </div>
   </div>
 </section>
+
 
 
       {/* About Section */}
