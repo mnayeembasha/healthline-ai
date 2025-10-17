@@ -514,7 +514,7 @@ const ChatBot = () => {
   };
 
   // Format section for display with proper styling
-  const formatSectionDisplay = (content: string): JSX.Element | null => {
+  const formatSectionDisplay = (content: string) => {
     if (!content) return null;
     
     const lines = content.split('\n').filter(line => line.trim());
