@@ -8,10 +8,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useToast } from "@/components/ui/use-toast";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { API_BASE_URL } from "@/config";
 import Loader from "@/components/Loader";
+import toast from "react-hot-toast";
 import {
   DownloadIcon,
   FileTextIcon,
@@ -49,8 +49,22 @@ interface DiagnosisResponse {
   prevention: string;
 }
 
+interface ApiErrorResponse {
+  message: string;
+  error: string;
+  errorType: "SERVICE_OVERLOAD" | "RATE_LIMIT" | "INTERNAL_ERROR";
+  userMessage: string;
+  severity?: string;
+  severityDetails?: string;
+}
+
+interface ApiSuccessResponse {
+  message: DiagnosisResponse;
+  severity: string;
+  severityDetails: string;
+}
+
 const ChatBot = () => {
-  const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([
     {
       sender: "bot",
@@ -137,105 +151,171 @@ const ChatBot = () => {
 
         const data = await response.json();
 
-        if (response.ok) {
-          let parsedReport: DiagnosisResponse;
+        // Handle error responses
+        if (!response.ok) {
+          const errorData = data as ApiErrorResponse;
+          
+          if (errorData.errorType === "SERVICE_OVERLOAD") {
+            toast.error("Our service is currently experiencing high demand. Please try again in a few moments");
+            
+            setMessages((prev) => [
+              ...prev,
+              {
+                sender: "bot",
+                text: "⚠️ Our AI assessment service is temporarily busy due to high demand. Please wait a moment and try submitting your responses again.",
+              },
+            ]);
+          } else if (errorData.errorType === "RATE_LIMIT") {
 
-          if (typeof data.message === 'object') {
-            parsedReport = {
-              summary: data.message.summary || "",
-              precautions: data.message.precautions || "",
-              medications: data.message.medications || "",
-              diet: data.message.diet || "",
-              prevention: data.message.prevention || ""
-            };
+            toast.error("Too Many Requests");
             
-            // ALWAYS use backend severity (already on 0-10 scale)
-            const backendSeverityScore = parseFloat(data.severityScore || "0");
-            const backendSeverityLabel = data.severity || "Low";
-            
-            setSeverity(backendSeverityScore);
-            setSeverityLabel(backendSeverityLabel);
-            
-            console.log("Backend severity:", {
-              score: backendSeverityScore,
-              label: backendSeverityLabel,
-              details: data.severityDetails
-            });
+            setMessages((prev) => [
+              ...prev,
+              {
+                sender: "bot",
+                text: "⚠️ You've made too many requests. Please wait about a minute before trying again.",
+              },
+            ]);
           } else {
-            parsedReport = {
-              summary: "",
-              precautions: "",
-              medications: "",
-              diet: "",
-              prevention: ""
-            };
-            setSeverity(0);
-            setSeverityLabel("Low");
-          }
+           
 
-          setDiagnosisReport(parsedReport);
-
-          // Format the text for display - convert numbered lists to HTML
-          const formatSection = (text: string) => {
-            if (!text) return "";
+            toast.error(errorData.userMessage || "Something went wrong. Please try again.")
             
-            // Split by newlines and format
-            const lines = text.split('\n').filter(line => line.trim());
-            const formattedLines = lines.map(line => {
-              const trimmedLine = line.trim();
-              // Check if line starts with number
-              if (/^\d+\./.test(trimmedLine)) {
-                return `<div class="mb-2 pl-4">${trimmedLine}</div>`;
-              }
-              return `<div class="mb-2">${trimmedLine}</div>`;
-            });
-            
-            return formattedLines.join('');
+            setMessages((prev) => [
+              ...prev,
+              {
+                sender: "bot",
+                text: "❌ An error occurred while processing your request. Please try again.",
+              },
+            ]);
+          }
+          
+          setWaitingForResponse(false);
+          return;
+        }
+
+        // Handle success response
+        const successData = data as ApiSuccessResponse;
+        let parsedReport: DiagnosisResponse;
+
+        if (typeof successData.message === 'object') {
+          parsedReport = {
+            summary: successData.message.summary || "",
+            precautions: successData.message.precautions || "",
+            medications: successData.message.medications || "",
+            diet: successData.message.diet || "",
+            prevention: successData.message.prevention || ""
           };
-
-          let combinedReport = "";
-
-          if (parsedReport.summary) {
-            combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-blue-700 mb-3">Summary</h3><div class="text-gray-700">${formatSection(parsedReport.summary)}</div></div>`;
+          
+          // Use backend severity (no conversion needed - already correct)
+          const backendSeverityLabel = successData.severity || "Low";
+          
+          // Calculate severity score from label for display
+          let severityScore = 0;
+          switch (backendSeverityLabel) {
+            case "High":
+              severityScore = 8.5;
+              break;
+            case "Moderate-High":
+              severityScore = 6.5;
+              break;
+            case "Moderate":
+              severityScore = 4.5;
+              break;
+            case "Low-Moderate":
+              severityScore = 2.5;
+              break;
+            case "Low":
+              severityScore = 1.0;
+              break;
+            default:
+              severityScore = 0;
           }
-
-          if (parsedReport.precautions) {
-            combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-blue-700 mb-3">Precautions</h3><div class="text-gray-700">${formatSection(parsedReport.precautions)}</div></div>`;
-          }
-
-          if (parsedReport.medications) {
-            combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-teal-700 mb-3">Medications</h3><div class="text-gray-700">${formatSection(parsedReport.medications)}</div></div>`;
-          }
-
-          if (parsedReport.diet) {
-            combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-teal-700 mb-3">Diet</h3><div class="text-gray-700">${formatSection(parsedReport.diet)}</div></div>`;
-          }
-
-          if (parsedReport.prevention) {
-            combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-teal-700 mb-3">Prevention</h3><div class="text-gray-700">${formatSection(parsedReport.prevention)}</div></div>`;
-          }
-
-          const botMessage: Message = {
-            sender: "bot",
-            text: combinedReport,
-          };
-
-          setMessages((prev) => [...prev, botMessage]);
-          setIsDiagnosisComplete(true);
-
-          toast({
-            title: "Diagnosis Complete",
-            description: "Your health report is ready!",
+          
+          setSeverity(severityScore);
+          setSeverityLabel(backendSeverityLabel);
+          
+          console.log("Backend severity:", {
+            score: severityScore,
+            label: backendSeverityLabel,
+            details: successData.severityDetails
           });
         } else {
-          setMessages((prev) => [...prev, { sender: "bot", text: data.message }]);
+          parsedReport = {
+            summary: "",
+            precautions: "",
+            medications: "",
+            diet: "",
+            prevention: ""
+          };
+          setSeverity(0);
+          setSeverityLabel("Low");
         }
+
+        setDiagnosisReport(parsedReport);
+
+        // Format the text for display - convert numbered lists to HTML
+        const formatSection = (text: string): string => {
+          if (!text) return "";
+          
+          // Split by newlines and format
+          const lines = text.split('\n').filter(line => line.trim());
+          const formattedLines = lines.map(line => {
+            const trimmedLine = line.trim();
+            // Check if line starts with number
+            if (/^\d+\./.test(trimmedLine)) {
+              return `<div class="mb-2 pl-4">${trimmedLine}</div>`;
+            }
+            return `<div class="mb-2">${trimmedLine}</div>`;
+          });
+          
+          return formattedLines.join('');
+        };
+
+        let combinedReport = "";
+
+        if (parsedReport.summary) {
+          combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-blue-700 mb-3">Summary</h3><div class="text-gray-700">${formatSection(parsedReport.summary)}</div></div>`;
+        }
+
+        if (parsedReport.precautions) {
+          combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-blue-700 mb-3">Precautions</h3><div class="text-gray-700">${formatSection(parsedReport.precautions)}</div></div>`;
+        }
+
+        if (parsedReport.medications) {
+          combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-teal-700 mb-3">Medications</h3><div class="text-gray-700">${formatSection(parsedReport.medications)}</div></div>`;
+        }
+
+        if (parsedReport.diet) {
+          combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-teal-700 mb-3">Diet</h3><div class="text-gray-700">${formatSection(parsedReport.diet)}</div></div>`;
+        }
+
+        if (parsedReport.prevention) {
+          combinedReport += `<div class="mb-6"><h3 class="text-lg font-semibold text-teal-700 mb-3">Prevention</h3><div class="text-gray-700">${formatSection(parsedReport.prevention)}</div></div>`;
+        }
+
+        const botMessage: Message = {
+          sender: "bot",
+          text: combinedReport,
+        };
+
+        setMessages((prev) => [...prev, botMessage]);
+        setIsDiagnosisComplete(true);
+
+        toast.success("Diagnosis Complete! Your Report is Ready")
       } catch (error) {
         console.error("Error:", error);
-        toast({
-          title: "Error",
-          description: "Failed to get diagnosis. Please try again.",
-        });
+        
+        // Handle network errors
+        toast.error("Network Error");
+        
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: "bot",
+            text: "❌ Network error occurred. Please check your internet connection and try again.",
+          },
+        ]);
       } finally {
         setWaitingForResponse(false);
       }
@@ -243,7 +323,7 @@ const ChatBot = () => {
   };
 
   // Updated to match backend thresholds (0-10 scale)
-  const getSeverityColor = (score: number) => {
+  const getSeverityColor = (score: number): string => {
     if (score < 2) return "text-emerald-500"; // 0-2: Low
     if (score < 3.5) return "text-lime-500";   // 2-3.5: Low-Moderate
     if (score < 5) return "text-yellow-500";   // 3.5-5: Moderate
@@ -252,7 +332,7 @@ const ChatBot = () => {
   };
 
   // Use backend-provided severity label
-  const getSeverityLabel = () => {
+  const getSeverityLabel = (): string => {
     return severityLabel;
   };
 
@@ -289,14 +369,14 @@ const ChatBot = () => {
     doc.text(`Severity Score: ${severity.toFixed(1)}/10 (${getSeverityLabel()})`, 10, yPos);
 
     // Clean function for PDF
-    const cleanForPDF = (text: string) => {
+    const cleanForPDF = (text: string): string => {
       return text
         .replace(/\n/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
     };
 
-    const addSection = (title: string, content: string) => {
+    const addSection = (title: string, content: string): number => {
       if (!content) return yPos;
       
       yPos += 15;
@@ -360,13 +440,15 @@ const ChatBot = () => {
     sendReportToDoctor(severity, JSON.stringify(diagnosisReport), specialists);
 
     doc.save("health_diagnosis.pdf");
-    toast({
-      title: "PDF Generated",
-      description: "Your health report has been downloaded.",
-    });
+    toast.success("PDF Generated");
+    
   };
 
-  const sendReportToDoctor = async (severity: number, finalBotResponse: string, specialists: string[]) => {
+  const sendReportToDoctor = async (
+    severityScore: number,
+    finalBotResponse: string,
+    specialists: string[]
+  ): Promise<void> => {
     try {
       if (!specialists || !Array.isArray(specialists) || specialists.length === 0) {
         console.error("Specialists array is required and cannot be empty.");
@@ -389,7 +471,7 @@ const ChatBot = () => {
         report: finalBotResponse,
         userId: localStorage.getItem("userId") || "",
         doctorId: doctorId,
-        severity: severity,
+        severity: severityScore,
       }, {
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
@@ -399,7 +481,8 @@ const ChatBot = () => {
       console.log(addedOp);
 
     } catch (err) {
-      console.error("Some Error Occurred while Performing database operation:", err);
+      const error = err as AxiosError;
+      console.error("Some Error Occurred while Performing database operation:", error);
     }
   };
 
@@ -426,14 +509,12 @@ const ChatBot = () => {
     setSeverity(0);
     setSeverityLabel("Low");
 
-    toast({
-      title: "Chat Cleared",
-      description: "Start a new diagnosis by selecting symptoms.",
-    });
+    toast.success("chat cleared");
+    
   };
 
   // Format section for display with proper styling
-  const formatSectionDisplay = (content: string) => {
+  const formatSectionDisplay = (content: string): JSX.Element | null => {
     if (!content) return null;
     
     const lines = content.split('\n').filter(line => line.trim());
@@ -474,7 +555,7 @@ const ChatBot = () => {
               label: disease,
             }))}
             value={selectedDiseases}
-            onValueChange={(values) => {
+            onValueChange={(values: string[]) => {
               setSelectedDiseases(values);
               setIsDiagnosisComplete(false);
             }}

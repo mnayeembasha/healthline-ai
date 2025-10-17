@@ -23,7 +23,6 @@ interface AssessmentResponse {
   diet: string;
   prevention: string;
   severity?: string;
-  severityScore?: string;
 }
 
 // Smart severity calculation function
@@ -259,6 +258,7 @@ export async function POST(request: Request) {
 
     const genAI = new GoogleGenerativeAI(geminiApiKey);
     const model = genAI.getGenerativeModel({ 
+      // model: "gemini-2.0-flash-live-001",
       model: "gemini-2.0-flash-exp",
       generationConfig: {
         temperature: 0.4,
@@ -283,7 +283,6 @@ YOUR SEVERITY ASSESSMENT MUST MATCH: ${severityResult.severity}
 JSON OUTPUT FORMAT (RETURN ONLY THIS):
 {
   "severity": "string (MUST be one of: High, Moderate-High, Moderate, Low-Moderate, Low)",
-  "severityScore": "number (0-10 scale)",
   "summary": "string",
   "precautions": "string",
   "medications": "string",
@@ -331,50 +330,88 @@ SEVERITY-APPROPRIATE LANGUAGE:
 
 Generate the assessment matching ${severityResult.severity} severity.`;
 
-    const geminiResponse = await model.generateContent(prompt);
-    const rawText = geminiResponse?.response?.text?.() || "{}";
-    
-    let jsonResponse: AssessmentResponse;
     try {
-      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        jsonResponse = JSON.parse(jsonMatch[0]);
-      } else {
-        jsonResponse = JSON.parse(rawText);
+      const geminiResponse = await model.generateContent(prompt);
+      const rawText = geminiResponse?.response?.text?.() || "{}";
+      
+      let jsonResponse: AssessmentResponse;
+      try {
+        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          jsonResponse = JSON.parse(jsonMatch[0]);
+        } else {
+          jsonResponse = JSON.parse(rawText);
+        }
+        
+        const requiredFields = ['summary', 'precautions', 'medications', 'diet', 'prevention'];
+        const missingFields = requiredFields.filter(field => !jsonResponse[field as keyof AssessmentResponse]);
+        
+        if (missingFields.length > 0) {
+          throw new Error(`Missing fields: ${missingFields.join(', ')}`);
+        }
+        
+      } catch (parseError) {
+        console.error("JSON Parse Error:", parseError);
+        console.error("Raw response:", rawText);
+        
+        jsonResponse = {
+          summary: `You are experiencing ${selectedDiseases.join(", ")} with ${severityResult.severity.toLowerCase()} severity. ${severityResult.details}. Proper care and monitoring are recommended.`,
+          precautions: `1. Monitor your symptoms closely every 4-6 hours\n2. Rest adequately and avoid strenuous activities\n3. Stay hydrated with 8-10 glasses of water daily\n4. Maintain good hygiene and wash hands frequently\n5. Keep living space clean and well-ventilated`,
+          medications: `1. Over-the-counter pain relievers as needed for symptom relief\n2. Follow package dosage instructions carefully\n3. Take medications with food to prevent stomach upset\n4. Keep track of all medications and times taken\n5. Consult healthcare provider for prescription recommendations`,
+          diet: `1. Light, easily digestible meals throughout the day\n2. Include plenty of fresh fruits and vegetables\n3. Stay hydrated with water, clear broths, and herbal teas\n4. Avoid heavy, oily, and spicy foods\n5. Limit processed foods and added sugars`,
+          prevention: `1. Practice thorough hand hygiene regularly\n2. Get 7-8 hours of quality sleep nightly\n3. Avoid close contact with sick individuals\n4. Maintain balanced diet and regular exercise\n5. Follow up with healthcare provider as needed`
+        };
       }
-      
-      const requiredFields = ['summary', 'precautions', 'medications', 'diet', 'prevention'];
-      const missingFields = requiredFields.filter(field => !jsonResponse[field as keyof AssessmentResponse]);
-      
-      if (missingFields.length > 0) {
-        throw new Error(`Missing fields: ${missingFields.join(', ')}`);
-      }
-      
-    } catch (parseError) {
-      console.error("JSON Parse Error:", parseError);
-      console.error("Raw response:", rawText);
-      
-      jsonResponse = {
-        summary: `You are experiencing ${selectedDiseases.join(", ")} with ${severityResult.severity.toLowerCase()} severity. ${severityResult.details}. Proper care and monitoring are recommended.`,
-        precautions: `1. Monitor your symptoms closely every 4-6 hours\n2. Rest adequately and avoid strenuous activities\n3. Stay hydrated with 8-10 glasses of water daily\n4. Maintain good hygiene and wash hands frequently\n5. Keep living space clean and well-ventilated`,
-        medications: `1. Over-the-counter pain relievers as needed for symptom relief\n2. Follow package dosage instructions carefully\n3. Take medications with food to prevent stomach upset\n4. Keep track of all medications and times taken\n5. Consult healthcare provider for prescription recommendations`,
-        diet: `1. Light, easily digestible meals throughout the day\n2. Include plenty of fresh fruits and vegetables\n3. Stay hydrated with water, clear broths, and herbal teas\n4. Avoid heavy, oily, and spicy foods\n5. Limit processed foods and added sugars`,
-        prevention: `1. Practice thorough hand hygiene regularly\n2. Get 7-8 hours of quality sleep nightly\n3. Avoid close contact with sick individuals\n4. Maintain balanced diet and regular exercise\n5. Follow up with healthcare provider as needed`
-      };
-    }
 
-    return NextResponse.json({ 
-      message: jsonResponse,
-      severity: severityResult.severity,
-      severityScore: (severityResult.score * 10).toFixed(1),
-      severityDetails: severityResult.details
-    });
+      return NextResponse.json({ 
+        message: jsonResponse,
+        severity: severityResult.severity,
+        severityDetails: severityResult.details
+      });
+
+    } catch (geminiError: any) {
+      console.error("Gemini API Error:", geminiError);
+      
+      // Check for service overload (503) or rate limit errors
+      if (geminiError.message?.includes('503') || 
+          geminiError.message?.includes('overloaded') ||
+          geminiError.message?.includes('Service Unavailable')) {
+        
+        return NextResponse.json({ 
+          message: "Service temporarily unavailable",
+          error: "The AI service is currently experiencing high demand. Please try again in a few moments.",
+          errorType: "SERVICE_OVERLOAD",
+          userMessage: "Our AI assessment service is temporarily busy. Please wait a moment and try again.",
+          severity: severityResult.severity,
+          severityDetails: severityResult.details
+        }, { status: 503 });
+      }
+      
+      // Check for rate limit errors
+      if (geminiError.message?.includes('429') || 
+          geminiError.message?.includes('rate limit')) {
+        
+        return NextResponse.json({ 
+          message: "Rate limit exceeded",
+          error: "Too many requests. Please wait before trying again.",
+          errorType: "RATE_LIMIT",
+          userMessage: "You've made too many requests. Please wait a minute before trying again.",
+          severity: severityResult.severity,
+          severityDetails: severityResult.details
+        }, { status: 429 });
+      }
+      
+      // Generic Gemini error
+      throw geminiError;
+    }
 
   } catch (error) {
     console.error("Error:", error);
     return NextResponse.json({ 
       message: "Internal server error.", 
-      error: error instanceof Error ? error.message : "Unknown error" 
+      error: error instanceof Error ? error.message : "Unknown error",
+      errorType: "INTERNAL_ERROR",
+      userMessage: "Something went wrong while processing your request. Please try again."
     }, { status: 500 });
   }
 }

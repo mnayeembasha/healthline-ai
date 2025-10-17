@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import {Toaster} from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </main>
               <Footer />
             </div>
+            <div><Toaster position="top-center"/></div>
           </ToastProvider>
         </QueryClientProvider>
       </body>
