@@ -15,6 +15,17 @@ interface Diseases {
   [key: string]: DiseaseData;
 }
 
+// Add interface for the JSON response structure
+interface AssessmentResponse {
+  summary: string;
+  precautions: string;
+  medications: string;
+  diet: string;
+  prevention: string;
+  severity?: string;
+  severityScore?: string;
+}
+
 // Smart severity calculation function
 function calculateSmartSeverity(
   responses: Record<string, any>,
@@ -323,7 +334,7 @@ Generate the assessment matching ${severityResult.severity} severity.`;
     const geminiResponse = await model.generateContent(prompt);
     const rawText = geminiResponse?.response?.text?.() || "{}";
     
-    let jsonResponse;
+    let jsonResponse: AssessmentResponse;
     try {
       const jsonMatch = rawText.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -333,7 +344,7 @@ Generate the assessment matching ${severityResult.severity} severity.`;
       }
       
       const requiredFields = ['summary', 'precautions', 'medications', 'diet', 'prevention'];
-      const missingFields = requiredFields.filter(field => !jsonResponse[field]);
+      const missingFields = requiredFields.filter(field => !jsonResponse[field as keyof AssessmentResponse]);
       
       if (missingFields.length > 0) {
         throw new Error(`Missing fields: ${missingFields.join(', ')}`);

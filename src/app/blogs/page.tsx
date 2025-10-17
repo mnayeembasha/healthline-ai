@@ -177,11 +177,25 @@ const Blogs = () => {
               <p className="text-gray-600">By {selectedBlog.author}</p>
               <p className="text-gray-500">{selectedBlog.date}</p>
             </div>
-            <div className="prose max-w-none">
-              <p className="text-gray-700 leading-relaxed">
-                {selectedBlog.content}
-              </p>
-            </div>
+            <div className="prose max-w-none space-y-4 text-gray-700 leading-relaxed">
+  {(() => {
+    if (!selectedBlog?.description) return null;
+
+    // Split into sentences
+    const sentences = selectedBlog.description.split(/(?<=\.)\s+/);
+
+    // Group sentences into paragraphs of ~3–4 sentences (≈4–5 lines)
+    const paragraphs: string[] = [];
+    for (let i = 0; i < sentences.length; i += 3) {
+      paragraphs.push(sentences.slice(i, i + 3).join(" "));
+    }
+
+    return paragraphs.map((para, index) => (
+      <p key={index}>{para.trim()}</p>
+    ));
+  })()}
+</div>
+
 
             <div className="mt-12">
               <h2 className="text-2xl font-bold mb-6">Related Articles</h2>

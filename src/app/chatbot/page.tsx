@@ -64,6 +64,7 @@ const ChatBot = () => {
   const [input, setInput] = useState<string>("");
   const [waitingForResponse, setWaitingForResponse] = useState<boolean>(false);
   const [severity, setSeverity] = useState<number>(0);
+  const [severityLabel, setSeverityLabel] = useState<string>("Low");
   const [isDiagnosisComplete, setIsDiagnosisComplete] = useState<boolean>(false);
   const [diagnosisReport, setDiagnosisReport] = useState<DiagnosisResponse>({
     summary: "",
@@ -148,21 +149,19 @@ const ChatBot = () => {
               prevention: data.message.prevention || ""
             };
             
-            // Use AI-provided severity or fallback to calculated
-            const aiSeverity = data.message.severity || data.severity;
-            const aiSeverityScore = data.message.severityScore || data.severityScore;
+            // ALWAYS use backend severity (already on 0-10 scale)
+            const backendSeverityScore = parseFloat(data.severityScore || "0");
+            const backendSeverityLabel = data.severity || "Low";
             
-            if (aiSeverity && aiSeverityScore) {
-              setSeverity(parseFloat(aiSeverityScore));
-              console.log("Using AI-provided severity:", aiSeverity, aiSeverityScore);
-            } else {
-              const severityValue = calculateSeverity();
-              setSeverity(severityValue);
-              console.log("Using calculated severity:", severityValue);
-            }
+            setSeverity(backendSeverityScore);
+            setSeverityLabel(backendSeverityLabel);
+            
+            console.log("Backend severity:", {
+              score: backendSeverityScore,
+              label: backendSeverityLabel,
+              details: data.severityDetails
+            });
           } else {
-            const severityValue = calculateSeverity();
-            setSeverity(severityValue);
             parsedReport = {
               summary: "",
               precautions: "",
@@ -170,6 +169,8 @@ const ChatBot = () => {
               diet: "",
               prevention: ""
             };
+            setSeverity(0);
+            setSeverityLabel("Low");
           }
 
           setDiagnosisReport(parsedReport);
@@ -241,38 +242,18 @@ const ChatBot = () => {
     }
   };
 
-  const calculateSeverity = (): number => {
-    let totalSeverity = 0;
-    const diseasesCount = selectedDiseases.length;
-
-    selectedDiseases.forEach((disease) => {
-      const formula = (diseases as Diseases)[disease]?.severityFormula;
-      let diseaseSeverity = 0;
-
-      questions.forEach((question) => {
-        if (responses[question.key]) {
-          const weight = formula[question.key] || 0;
-          diseaseSeverity +=
-            (responses[question.key] === "yes" ? 1 : 0) * weight;
-        }
-      });
-
-      totalSeverity += diseaseSeverity;
-    });
-
-    return diseasesCount > 0 ? totalSeverity / diseasesCount : 0;
+  // Updated to match backend thresholds (0-10 scale)
+  const getSeverityColor = (score: number) => {
+    if (score < 2) return "text-emerald-500"; // 0-2: Low
+    if (score < 3.5) return "text-lime-500";   // 2-3.5: Low-Moderate
+    if (score < 5) return "text-yellow-500";   // 3.5-5: Moderate
+    if (score < 7.5) return "text-orange-500"; // 5-7.5: Moderate-High
+    return "text-rose-500";                     // 7.5-10: High
   };
 
-  const getSeverityColor = (severity: number) => {
-    if (severity < 3) return "text-emerald-500";
-    if (severity < 6) return "text-amber-500";
-    return "text-rose-500";
-  };
-
-  const getSeverityLabel = (severity: number) => {
-    if (severity <= 0.3) return "Low";
-    if (severity <= 0.6) return "Moderate";
-    return "High";
+  // Use backend-provided severity label
+  const getSeverityLabel = () => {
+    return severityLabel;
   };
 
   const handleGeneratePDF = () => {
@@ -305,7 +286,7 @@ const ChatBot = () => {
 
     // Severity
     yPos += 10;
-    doc.text(`Severity Score: ${severity.toFixed(2)} (${getSeverityLabel(severity)})`, 10, yPos);
+    doc.text(`Severity Score: ${severity.toFixed(1)}/10 (${getSeverityLabel()})`, 10, yPos);
 
     // Clean function for PDF
     const cleanForPDF = (text: string) => {
@@ -443,6 +424,7 @@ const ChatBot = () => {
       prevention: ""
     });
     setSeverity(0);
+    setSeverityLabel("Low");
 
     toast({
       title: "Chat Cleared",
@@ -595,9 +577,9 @@ const ChatBot = () => {
                 <AlertCircleIcon size={16} /> Severity Level
               </h3>
               <p className={`text-2xl font-bold ${getSeverityColor(severity)}`}>
-                {getSeverityLabel(severity)}
+                {getSeverityLabel()}
               </p>
-              <p className="text-xs text-gray-500 mt-1">Score: {severity.toFixed(2)}/10</p>
+              <p className="text-xs text-gray-500 mt-1">Score: {severity.toFixed(1)}/10</p>
             </Card>
 
             <Card className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg shadow-sm">

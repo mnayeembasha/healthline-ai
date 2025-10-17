@@ -67,11 +67,13 @@ const Telemedicines = () => {
                                         <p className="text-sm text-gray-600">
                                             Pregnancy Category: {drug.pregnancy_category}
                                         </p>
-                                        {drug.rating && (
-                                            <p className="text-sm text-gray-600">
-                                                Rating: {drug.rating}/10 ({drug.no_of_reviews} reviews)
-                                            </p>
-                                        )}
+                                       <p className="text-sm text-gray-600">
+      Rating:{" "}
+      {drug.rating != null && !isNaN(Number(drug.rating))
+        ? `${Number(drug.rating).toFixed(1)}/10 (${drug.no_of_reviews ?? 0} reviews)`
+        : "NA"}
+    </p>
+
                                     </div>
                                 </CardContent>
                             </Card>
@@ -96,9 +98,22 @@ const Telemedicines = () => {
                                     <p>{drugDetails?.medical_condition}</p>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold mb-2">Description</h3>
-                                    <p>{drugDetails?.medical_condition_description}</p>
+                                  <h3 className="font-semibold mb-2">Description</h3>
+                                  {drugDetails?.medical_condition_description
+                                    ?.split(/(?<=\.)\s+/) // split by sentence endings
+                                    .reduce((acc: string[][], sentence, i) => {
+                                      const chunkIndex = Math.floor(i / 4); // 4 sentences per paragraph
+                                      acc[chunkIndex] = acc[chunkIndex] || [];
+                                      acc[chunkIndex].push(sentence);
+                                      return acc;
+                                    }, [])
+                                    .map((chunk, index) => (
+                                      <p key={index} className="text-gray-700 leading-relaxed mb-4 text-justify">
+                                        {chunk.join(" ")}
+                                      </p>
+                                    ))}
                                 </div>
+
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <h3 className="font-semibold mb-2">Activity</h3>
@@ -109,16 +124,18 @@ const Telemedicines = () => {
                                         <p>{drugDetails?.pregnancy_category}</p>
                                     </div>
                                 </div>
-                                {drugDetails?.rating && (
-                                    <div>
-                                        <h3 className="font-semibold mb-2">Rating</h3>
-                                        <p>
-                                            {drugDetails.rating}/10 ({drugDetails.no_of_reviews}{" "}
-                                            reviews)
-                                        </p>
-                                    </div>
-                                )}
-                                <div>
+                                {drugDetails && (
+  <div>
+    <h3 className="font-semibold mb-2">Rating</h3>
+    <p className="text-sm text-gray-600">
+      {drugDetails.rating != null && !isNaN(Number(drugDetails.rating))
+        ? `${Number(drugDetails.rating).toFixed(1)}/10 (${drugDetails.no_of_reviews ?? 0} reviews)`
+        : "NA"}
+    </p>
+  </div>
+)}
+
+                                {/*<div>
                                     <h3 className="font-semibold mb-2">More Information</h3>
                                     <a
                                         href={drugDetails?.drug_link}
@@ -128,7 +145,7 @@ const Telemedicines = () => {
                                     >
                                         View on Drugs.com
                                     </a>
-                                </div>
+                                </div>*/}
                             </CardContent>
                         </Card>
                     </div>

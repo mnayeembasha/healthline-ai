@@ -45,23 +45,35 @@ export default function Home() {
 
     <div className="min-h-screen">
       {/* Welcome Section */}
-      <section className="pt-24 pb-16 bg-gradient-to-br from-primary/10 to-secondary/10">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center space-y-6 animate-fade-in">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-              Welcome to the Future of Healthcare
-            </h1>
-            <p className="text-xl text-gray-600">
-              Experience personalized healthcare powered by artificial intelligence
-              and telemedicine.
-            </p>
-            <Link href="/chatbot"><Button size="lg" className="mt-8">
-              Get Started
-            </Button>
-            </Link>
-        </div>
-        </div>
-      </section>
+
+      <section className="min-h-screen w-full relative flex flex-col justify-center items-center overflow-hidden">
+  {/* Radial Gradient Background */}
+  <div
+    className="absolute inset-0 z-0"
+    style={{
+      background: "radial-gradient(125% 125% at 50% 10%, #fff 40%, #6366f1 100%)",
+    }}
+  />
+
+  {/* Hero Content */}
+  <div className="container mx-auto px-4 relative z-10">
+    <div className="max-w-4xl leading-tighter mx-auto text-center space-y-6 animate-fade-in">
+      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
+        Welcome to the Future of <span className="bg-clip-text text-transparent bg-gradient-to-b from-blue-300 via-blue-500 to-blue-700">Healthcare</span>
+      </h1>
+      <p className="max-w-lg mx-auto text-2xl text-gray-600">
+        Experience personalized healthcare powered by artificial intelligence
+        and telemedicine.
+      </p>
+      <Link href="/chatbot">
+        <Button size="lg" className="mt-8 bg-gradient-to-b from-blue-400 to-blue-700">
+          Get Started
+        </Button>
+      </Link>
+    </div>
+  </div>
+</section>
+
 
       {/* About Section */}
       <section className="py-16 bg-white">
